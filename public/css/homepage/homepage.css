@@ -1,0 +1,18 @@
+.item
+{
+    margin-bottom: 20px;
+}
+
+.title_page
+{
+    text-align: center;
+    text-decoration: underline;
+    margin: 20px;
+}
+
+#btn-more
+{
+    background-color: #4f837f;
+    color: white;
+    margin-bottom: 20px;
+}

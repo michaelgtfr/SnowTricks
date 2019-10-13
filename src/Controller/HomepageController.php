@@ -1,13 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: mickd
- * Date: 04/10/2019
- * Time: 21:39
- */
 
 namespace App\Controller;
 
+use App\Entity\Item;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -21,10 +16,25 @@ class HomepageController extends AbstractController
     public function Homepage()
     {
         /*récupération des figures dans la base de données */
+        $items = $this->getDoctrine()
+            ->getRepository(Item::class)
+            ->listOfArticle(0,9);
 
+        $numberItems = count($items);
 
+        if ($numberItems >= 10 ) {
+            return $moreItems = $this->getDoctrine()
+                    ->getRepository(Item::class)
+                    ->listofArticle(10, $numberItems);
+        } else {
+            $moreItems = null;
+        }
 
         /*envoyer le éléments a la vue */
-        return $this->render('homepage/homepage.html.twig');
+        return $this->render('homepage/homepage.html.twig',[
+            'items'=> $items,
+            'moreItems' => $moreItems,
+            'numberItems' => $numberItems,
+        ]);
     }
 }

@@ -22,6 +22,24 @@ class ItemRepository extends ServiceEntityRepository
     // /**
     //  * @return Item[] Returns an array of Item objects
     //  */
+
+    public function listOfArticle($firstItem, $numberOfItem)
+    {
+      return $this->createQueryBuilder('i')
+          ->innerJoin('i.pictures','p')
+          ->addSelect('i.id')
+          ->addSelect('i.title')
+          ->addSelect('p.name')
+          ->addSelect('p.extention')
+          ->addSelect('p.description')
+          ->orderBy('i.id', 'DESC')
+          ->setFirstResult($firstItem)
+          ->setMaxResults($numberOfItem)
+          ->getQuery()
+          ->getResult()
+          ;
+    }
+
     /*
     public function findByExampleField($value)
     {

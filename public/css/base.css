@@ -161,6 +161,11 @@
   background-color: #467370 !important;
 }
 
+.block_ancre
+{
+  margin-top: -5%;
+}
+
 body {
   font-family: 'Nunito';
   letter-spacing: 0.0625em;

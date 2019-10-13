@@ -1,8 +1,79 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+   <link href="{{ asset('css/homepage/homepage.css') }}" rel="stylesheet">
+{% endblock %}
 
 {% block body %}
+<section class="item">
+    <div class="container">
+        <div class="row">
+            <div id="title_block" class="title_block col-lg-12">
+                <h3 class="title_page">Les articles du sites:</h3>
+            </div>
+            <div class="items row">
+                {% for item in items %}
+                    <div class="blockItem card-deck col-lg-3 col-xs-12">
+                        <div class="card border-0 shadow">
+                            <img class="card-img-top img_item col-xs-12" src="img/imgPost/{{ item.name }}.{{ item.extention }}" alt="{{ item.description }}" />
+                            <div class="col-lg-12 col-xs-12 text-center">
+                                <a class="title_item col-xs-6" href="{{ path('app_detail') }}?id={{ item.id }}">{{ item.title|slice(0,8) }}</a>
+                                {% if item is defined %}
+                                    <a class="modify_item fa fa-pen-fancy col-xs-3" href="{{ path('app_modify') }}?id={{ item.id }}"></a>
+                                    <a class="delete_item fa fa-trash-alt text-right col-xs-3" href="{{ path('app_delete') }}?id={{ item.id }}"></a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+    {% if moreItems is not null %}
+        <section class="more_item">
+            <div class="container">
+                <div class="block_btn_more text-center col-xs-12">
+                    <button id="btn-more" class="btn"><i class="fa fa-angle-down"></i>Afficher plus</button>
+                </div>
+                <div class="items row">
+                    {% for item in moreItems %}
+                        <div class="blockItem card-deck col-lg-3 col-xs-12">
+                            <div class="card border-0 shadow">
+                                <img class="card-img-top img_item col-xs-12" src="img/imgPost/{{ item.name }}.{{ item.extention }}" alt="{{ item.description }}" />
+                                <div class="col-lg-12 col-xs-12 text-center">
+                                    <a class="title_item col-xs-6" href="{{ path('app_detail') }}?id={{ item.id }}">{{ item.title|slice(0,8) }}</a>
+                                    {% if item is defined %}
+                                        <a class="modify_item fa fa-pen-fancy col-xs-3" href="{{ path('app_modify') }}?id={{ item.id }}"></a>
+                                        <a class="delete_item fa fa-trash-alt text-right col-xs-3" href="{{ path('app_delete') }}?id={{ item.id }}"></a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% if numberItems >= 15 %}
+                <div class="block_ancre_bottom text-right">
+                    <a href="#title_block" class="ancre_bottom far fa-arrow-alt-circle-up fa-2x"></a>
+                </div>
+                {% endif %}
+            </div>
+        </section>
+    {% endif %}
 
-<p>salut</p>
 
 {% endblock %}
+
+ {% block javascripts %}
+     <script>
+         $(document).ready(function(){
+             $("#panel").hide(),
+             $(".ancre_bottom").hide(),
+             $("#btn-more").click(function(){
+                 $("#panel").slideToggle("slow"),
+                 $(".ancre_bottom").slideToggle("slow");
+             });
+         });
+     </script>
+ {% endblock %}
+
