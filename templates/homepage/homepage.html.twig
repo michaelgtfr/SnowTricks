@@ -17,10 +17,10 @@
                         <div class="card border-0 shadow">
                             <img class="card-img-top img_item col-xs-12" src="img/imgPost/{{ item.name }}.{{ item.extention }}" alt="{{ item.description }}" />
                             <div class="col-lg-12 col-xs-12 text-center">
-                                <a class="title_item col-xs-6" href="{{ path('app_detail') }}?id={{ item.id }}">{{ item.title|slice(0,8) }}</a>
+                                <a class="title_item col-xs-6" href="{{ path('app_detail', {id: item.id}) }}">{{ item.title|slice(0,8) }}</a>
                                 {% if item is defined %}
-                                    <a class="modify_item fa fa-pen-fancy col-xs-3" href="{{ path('app_modify') }}?id={{ item.id }}"></a>
-                                    <a class="delete_item fa fa-trash-alt text-right col-xs-3" href="{{ path('app_delete') }}?id={{ item.id }}"></a>
+                                    <a class="modify_item fa fa-pen-fancy col-xs-3" href="{{ path('app_modify', {id: item.id}) }}"></a>
+                                    <a class="delete_item fa fa-trash-alt text-right col-xs-3" href="{{ path('app_delete', {id: item.id}) }}"></a>
                                 {% endif %}
                             </div>
                         </div>
@@ -42,10 +42,10 @@
                             <div class="card border-0 shadow">
                                 <img class="card-img-top img_item col-xs-12" src="img/imgPost/{{ item.name }}.{{ item.extention }}" alt="{{ item.description }}" />
                                 <div class="col-lg-12 col-xs-12 text-center">
-                                    <a class="title_item col-xs-6" href="{{ path('app_detail') }}?id={{ item.id }}">{{ item.title|slice(0,8) }}</a>
+                                    <a class="title_item col-xs-6" href="{{ path('app_detail', {id: item.id}) }}">{{ item.title|slice(0,8) }}</a>
                                     {% if item is defined %}
-                                        <a class="modify_item fa fa-pen-fancy col-xs-3" href="{{ path('app_modify') }}?id={{ item.id }}"></a>
-                                        <a class="delete_item fa fa-trash-alt text-right col-xs-3" href="{{ path('app_delete') }}?id={{ item.id }}"></a>
+                                        <a class="modify_item fa fa-pen-fancy col-xs-3" href="{{ path('app_modify', {id: item.id}) }}"></a>
+                                        <a class="delete_item fa fa-trash-alt text-right col-xs-3" href="{{ path('app_delete', {id: item.id}) }}"></a>
                                     {% endif %}
                                 </div>
                             </div>
