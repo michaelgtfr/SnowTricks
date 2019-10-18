@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Comment;
 use App\Entity\Item;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,7 +26,8 @@ class DetailArticleController extends AbstractController
 
         $movies = $item->getMovies();
 
-        $comments = $item->getComments();
+        $comments = $em->getRepository(Comment::class)
+                    ->commentArticle($request->get('id'));
 
         return $this->render('detailArticle/detailArticle.html.twig', [
             'item' => $item,

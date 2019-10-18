@@ -24,8 +24,8 @@ class HomepageController extends AbstractController
 
         if ($numberItems >= 10 ) {
             return $moreItems = $this->getDoctrine()
-                    ->getRepository(Item::class)
-                    ->listofArticle(10, $numberItems);
+                ->getRepository(Item::class)
+                ->listofArticle(10, $numberItems);
         } else {
             $moreItems = null;
         }

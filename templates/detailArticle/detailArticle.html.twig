@@ -1,35 +1,86 @@
 {% extends 'base.html.twig' %}
 
-
-{%  block head %}
-
-    <script>
-        $(document).ready(function(){
-            $("#flip").click(function(){
-                $("#panel").slideToggle("slow");
-            });
-        });
-    </script>
-    <style>
-        #panel, #flip {
-            padding: 5px;
-            text-align: center;
-            background-color: #e5eecc;
-            border: solid 1px #c3c3c3;
-        }
-
-        #panel {
-            padding: 50px;
-            display: none;
-        }
-    </style>
-
-{%  endblock %}
+{% block stylesheets %}
+    <link href="{{ asset('css/detailArticle/detailArticle.css') }}" rel="stylesheet">
+{% endblock %}
 
 {% block body %}
+<section>
+    <div class="container_fluid">
+        <div class="block-item row">
+            <div class="product-slider col-xs-12">
+                <div id="carousel" class="carousel slide col-xs-12 text-center" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="block-modify offset-lg-8 col-lg-1 ">
+                            {% if pictures is defined %}
+                                    <a class="modify_item fa fa-pen-fancy col-xs-3" href="{{ path('app_modify', {id: item.id}) }}"></a>
+                                    <a class="delete_item fa fa-trash-alt text-right col-xs-3" href="{{ path('app_delete', {id: item.id}) }}"></a>
+                            {% endif %}
+                        </div>
+                        {% for picture in pictures %}
+                            <div class="carousel-item col-xs-12 item{% if loop.index == 1 %} active {% endif %}">
+                                <img class="img-carousel col-xs-12" src="/img/imgPost/{{ picture.name }}.{{ picture.extention }}" alt="{{ picture.description}}" />
+                            </div>
+                        {% endfor %}
+                        {% for movie in movies %}
+                            <div class="item">
+                                <video src="{{ movie.link }}"></video>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <div id="thumbcarousel" class="carousel slide" data-interval="false">
+                        <div class="carousel-inner">
+                            <div class="item active">
+                                {% for picture in pictures %}
+                                    <div data-target="#carousel" data-slide-to="{{ loop.index0 }}" class="thumb"><img class="img-thumb" src="/img/imgPost/{{ picture.name }}.{{ picture.extention }}" alt="{{ picture.description}}"/></div>
+                                {% endfor %}
+                                {% for movie in movies %}
+                                    <div data-target="#carousel" data-slide-to="{{ loop.index0 }}" class="thumb"><a href="{{ movie.link }}"></a></div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    <div id="flip">Click to slide down panel</div>
-    <div id="panel">Hello world!</div>
+            <div class="block-text container">
+                <div class="row">
+                    <div class="title col-lg-12 col-xs-12 text-center">
+                        <h3>{{ item.title }}</h3>
+                    </div>
+                    <div class="chapo col-lg-12 col-xs-12 text-center">
+                        <p>{{ item.chapo }}</p>
+                    </div>
+                    <div class="content col-lg-12 col-xs-12 text-center">
+                        <p>{{ item.content }}</p>
+                    </div>
+                </div>
+            </div>
 
+            <div class="container">
+                <div class="row">
+                    <div class="block-comment offset-lg-3 col-lg-6 col-xs-12">
+                    {% for comment in comments %}
+                        <div class="comment col-lg-12 col-xs-12 text-center">
+                            <p>{{ comment.comment }}</p>
+                        </div>
+                        <div class="author-and-date col-lg-12 col-xs-12 text-center">
+                            <p>auteur: {{ comment.name }} le {{ comment.dateCreate|date('d/m/Y') }}</p>
+                        </div>
 
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {%  endblock %}
+
+{% block javascripts %}
+    <script>
+        $('.carousel').carousel({ interval : false });
+    </script>
+{% endblock %}

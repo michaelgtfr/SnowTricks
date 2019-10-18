@@ -19,6 +19,20 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
+    public function commentArticle($id)
+    {
+        return $this->createQueryBuilder('c')
+            ->innerJoin('c.author', 'u')
+            ->addSelect('c.dateCreate')
+            ->addSelect('c.comment')
+            ->addSelect('u.name')
+            ->andWhere('c.article = :id')
+            ->setParameter('id', $id)
+            ->orderBy('c.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Comment[] Returns an array of Comment objects
     //  */
