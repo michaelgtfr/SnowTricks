@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -53,7 +53,7 @@ class User
     /**
      * @ORM\Column(type="json")
      */
-    private $role = [];
+    private $roles = [];
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -153,18 +153,18 @@ class User
         return $this;
     }
 
-    public function getRole(): array
+    public function getRoles(): array
     {
-        $role = $this->role;
+        $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $role[] = 'ROLE_USER';
+        $roles[] = 'ROLE_USER';
 
-        return array_unique($role);
+        return array_unique($roles);
     }
 
-    public function setRole(array $role): self
+    public function setRoles(array $roles): self
     {
-        $this->role = $role;
+        $this->roles = $roles;
 
         return $this;
     }
@@ -241,6 +241,16 @@ class User
         }
 
         return $this;
+    }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): string
+    {
+        return (string) $this->email;
     }
 
     /**
