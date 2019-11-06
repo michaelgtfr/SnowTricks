@@ -5,6 +5,9 @@
 {% endblock %}
 
 {% block body %}
+    {% if message is not null %}
+        <p>{{ message }}</p>
+    {% endif %}
 <section class="item">
     <div class="container">
         <div class="row">

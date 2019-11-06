@@ -70,6 +70,11 @@ class User implements UserInterface
      */
     private $comments;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $confirmationKey;
+
     public function __construct()
     {
         $this->items = new ArrayCollection();
@@ -268,5 +273,17 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getConfirmationKey(): ?string
+    {
+        return $this->confirmationKey;
+    }
+
+    public function setConfirmationKey(string $confirmationKey): self
+    {
+        $this->confirmationKey = $confirmationKey;
+
+        return $this;
     }
 }
