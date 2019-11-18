@@ -13,3 +13,5 @@
 ###< symfony/web-server-bundle ###
 
 /.idea/
+/public/img/imgAvatar
+/public/img/imgPost
