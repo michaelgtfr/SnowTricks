@@ -10,11 +10,15 @@ namespace App\Service;
  */
 class ProcessingFiles
 {
-    public function processingFiles($linkFile, $extensionFile)
+    public function processingFiles($linkFile, $extensionFile, $folder)
     {
+        //creation of the new name
         $datePicture = date('Y_m_d_H_i_s');
-        $namePhoto = "{$datePicture}.{$extensionFile}";
-        $transfertFile ="img\imgAvatar\\$namePhoto";
+        $idUnique = uniqid();
+        $namePhoto = "{$datePicture}-{$idUnique}.{$extensionFile}";
+
+        //transfert
+        $transfertFile ="img\\$folder\\$namePhoto";
         move_uploaded_file($linkFile, $transfertFile);
 
         return $namePhoto;

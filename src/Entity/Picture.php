@@ -22,14 +22,14 @@ class Picture
     private $article;
 
     /**
-     * @ORM\Column(type="string", length=30)
+     * @ORM\Column(type="string", length=50)
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=10)
      */
-    private $extention;
+    private $extension;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -65,14 +65,14 @@ class Picture
         return $this;
     }
 
-    public function getExtention(): ?string
+    public function getExtension(): ?string
     {
-        return $this->extention;
+        return $this->extension;
     }
 
-    public function setExtention(string $extention): self
+    public function setExtension(string $extension): self
     {
-        $this->extention = $extention;
+        $this->extension = $extension;
 
         return $this;
     }

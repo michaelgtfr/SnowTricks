@@ -19,12 +19,12 @@
                         </div>
                         {% for picture in pictures %}
                             <div class="carousel-item col-xs-12 item{% if loop.index == 1 %} active {% endif %}">
-                                <img class="img-carousel col-xs-12" src="/img/imgPost/{{ picture.name }}.{{ picture.extention }}" alt="{{ picture.description}}" />
+                                <img class="img-carousel col-xs-12" src="/img/imgPost/{{ picture.name }}.{{ picture.extension }}" alt="{{ picture.description}}" />
                             </div>
                         {% endfor %}
                         {% for movie in movies %}
-                            <div class="item">
-                                <video src="{{ movie.link }}"></video>
+                            <div class="carousel-item col-xs-12 item">
+                                    <iframe width="560" height="315" src="https://www.youtube.com/embed/DyDfgMOUjCI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             </div>
                         {% endfor %}
                     </div>
@@ -34,10 +34,14 @@
                         <div class="carousel-inner">
                             <div class="item active">
                                 {% for picture in pictures %}
-                                    <div data-target="#carousel" data-slide-to="{{ loop.index0 }}" class="thumb"><img class="img-thumb" src="/img/imgPost/{{ picture.name }}.{{ picture.extention }}" alt="{{ picture.description}}"/></div>
+                                    <div data-target="#carousel" data-slide-to="#" class="thumb">
+                                        <img class="img-thumb" src="/img/imgPost/{{ picture.name }}.{{ picture.extension }}" alt="{{ picture.description}}"/>
+                                    </div>
                                 {% endfor %}
                                 {% for movie in movies %}
-                                    <div data-target="#carousel" data-slide-to="{{ loop.index0 }}" class="thumb"><a href="{{ movie.link }}"></a></div>
+                                    <div data-target="#carousel" data-slide-to="#" class="thumb">
+                                        <a>video</a>
+                                    </div>
                                 {% endfor %}
                             </div>
                         </div>
@@ -79,10 +83,18 @@
         </div>
     </div>
 </section>
+
 {%  endblock %}
 
 {% block javascripts %}
     <script>
-        $('.carousel').carousel({ interval : false });
+        jQuery(document).ready( function () {
+            $('.carousel').carousel({interval: false});
+            let numberThumb = $('.thumb').length;
+            for(let counter = 0; counter < numberThumb; counter++)
+            {
+                $('.thumb').eq(counter).attr('data-slide-to', counter);
+            }
+        });
     </script>
 {% endblock %}

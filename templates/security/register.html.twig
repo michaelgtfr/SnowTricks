@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+
+{% endblock %}
+
 {% block title %}Log out!{% endblock %}
 {% block body %}
    {% if message is not null %}
@@ -7,4 +11,13 @@
    {% endif %}
 
    {{ form(form) }}
+{% endblock %}
+
+{% block  javascripts %}
+<script>
+   $("input[type=file]").change(function (e){
+      $(this).next('.custom-file-label').text(e.target.files[0].name);
+   });
+   $(".custom-file-label" ).attr( "data-browse", "Choisir" );
+</script>
 {% endblock %}

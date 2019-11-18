@@ -36,7 +36,10 @@ class RegisterForm extends AbstractType
                 'label' => 'Confirmation du mot de passe'
                 ])
             ->add('picture', FileType::class,[
-                'label' => 'Avatar'
+                'label' => 'Avatar',
+                'attr' => [
+                    'lang' => 'fr',
+                ]
             ])
             ->add('presentation', TextareaType::class)
             -> add ( 'validate' , SubmitType::class, [

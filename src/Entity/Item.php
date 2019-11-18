@@ -44,17 +44,17 @@ class Item
     private $dateCreate;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Picture", mappedBy="article")
+     * @ORM\OneToMany(targetEntity="App\Entity\Picture", mappedBy="article", cascade={"persist"})
      */
     private $pictures;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Movie", mappedBy="article")
+     * @ORM\OneToMany(targetEntity="App\Entity\Movie", mappedBy="article", cascade={"persist"})
      */
     private $movies;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="article")
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="article", cascade={"persist"})
      */
     private $comments;
 

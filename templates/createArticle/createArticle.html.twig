@@ -1,0 +1,129 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/createdArticle.css') }}" rel="stylesheet">
+    <style>
+        .custom-file-label :lang(fr)::after {
+            content: "Choisir...";
+        }
+    </style>
+{% endblock %}
+
+{%  block body %}
+<section class="createArticle">
+    <div class="container">
+        <div class="row">
+            {{ form_start(form) }}
+
+            {{ form_row (form.title) }}
+
+            <div class="pictureBlock col-xs-12">
+                {{ form_label (form.files) }}
+                <ul id="files-fields-list" class="col-xs-12"
+                    data-prototype-files=" {{ form_widget( form.files.vars.prototype )| e }} "
+                    data-widget-files-tags=" {{ '<li></li>' | e }} "
+                    data-widget-files-counter= "0">
+                    {% for filesField in form.files %}
+                        <li class="files_class">
+                            {{ form_errors ( filesField ) }}
+                            {{ form_widget ( filesField ) }}
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div>
+                    <button type="button"
+                            class="add-another-collection-widget-files btn btn-warning"
+                            data-list-selector="#files-fields-list">Ajouter une autre photo</button>
+                    <button type="button"
+                            class="remove-another-collection-widget-files btn btn-warning"
+                            data-list-selector="#files-fields-list">Supprimer la dernière photo</button>
+                </div>
+            </div>
+
+            {{ form_label (form.movies) }}
+            <ul id="movies-fields-list"
+                data-prototype=" {{ form_widget( form.movies.vars.prototype )| e }} "
+                data-widget-tags=" {{ '<li></li>' | e }} "
+                data-widget-counter="0" >
+                {% for moviesField in form.movies %}
+                    <li class="movies_class">
+                        {{ form_errors( moviesField ) }}
+                        {{ form_widget( moviesField ) }}
+                    </li>
+                {% endfor %}
+            </ul>
+            <div>
+                <button type="button"
+                        class="remove-another-collection-widget btn btn-warning"
+                        data-list-selector="#movies-fields-list">Supprimer le lien</button>
+                <button type="button"
+                        class="add-another-collection-widget btn btn-warning"
+                        data-list-selector="#movies-fields-list">Ajouter un autre lien</button>
+            </div>
+
+            {{ form_row (form.chapo) }}
+
+            {{ form_row (form.content) }}
+
+            {{ form_row (form.validate) }}
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        jQuery(document).ready( function () {
+            jQuery ('.add-another-collection-widget').click( function(e) {
+                var list = jQuery( jQuery(this).attr('data-list-selector'));
+                // Try to find the counter of the list or use the length of the list
+                var counter = list.data('widget-counter') || list.children().length ;
+                // grab the prototype template
+                var newWidget = list.attr('data-prototype');
+                // replace the "__name__" used in the id and name of the prototype
+                // with a number that's unique to your movie
+                // end name attribute looks like name="contact[movies][2]"
+                newWidget = newWidget.replace( /__name__/g, counter );
+                // Increase the counter
+                counter ++ ;
+                // And store it, the length cannot be used if deleting widgets is allowed
+                list.data( 'widget-counter', counter );
+
+                // create a new list element and add it to the list
+                var newElem = jQuery(list.attr('data-widget-tags' )).html(newWidget );
+                newElem.appendTo(list );
+            });
+            jQuery ('.remove-another-collection-widget').click( function(e) {
+                $('.movies-box').last().parent().remove();
+            });
+            jQuery ('.add-another-collection-widget-files').click( function(e) {
+                var filesList = jQuery( jQuery(this).attr('data-list-selector'));
+
+                var filesCounter = filesList.data('widget-files-counter') || filesList.children().length ;
+
+                var newFilesWidget = filesList.attr('data-prototype-files');
+
+                newFilesWidget = newFilesWidget.replace( /__name__/g, filesCounter );
+
+                filesCounter ++ ;
+
+                filesList.data( 'widget-files-counter', filesCounter );
+
+                var newFilesElem = jQuery(filesList.attr('data-widget-files-tags' )).html(newFilesWidget );
+                newFilesElem.appendTo(filesList );
+                $("input[type=file]").change(function (e){
+                    $(this).next('.custom-file-label').text(e.target.files[0].name);
+                });
+                $(".custom-file-label" ).attr( "data-browse", "Choisir" );
+            });
+            jQuery ('.remove-another-collection-widget-files').click( function(e) {
+                $('.custom-file').last().parent().remove();
+            });
+
+        });
+    </script>
+{% endblock %}

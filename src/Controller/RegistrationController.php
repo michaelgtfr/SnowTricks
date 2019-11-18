@@ -40,7 +40,7 @@ class RegistrationController extends AbstractController
                 $data = $form->getData();
 
                 $linkAvatar = new ProcessingFiles();
-                $linkAvatar = $linkAvatar->processingFiles($data->getPicture(), $extensionFiles);
+                $linkAvatar = $linkAvatar->processingFiles($data->getPicture(), $extensionFiles, 'imgAvatar');
 
                 $key = md5(microtime(true)*100000);
 

@@ -18,8 +18,12 @@ class CommentForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('Comment', TextType::class)
-            -> add ( 'Valider' , SubmitType :: class )
+            ->add('comment', TextType::class, [
+                'label' => 'Commentaire'
+            ])
+            -> add ( 'validate' , SubmitType::class, [
+                'label' => 'Valider'
+            ] )
             ;
     }
 }

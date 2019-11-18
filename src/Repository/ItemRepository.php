@@ -30,7 +30,7 @@ class ItemRepository extends ServiceEntityRepository
           ->addSelect('i.id')
           ->addSelect('i.title')
           ->addSelect('p.name')
-          ->addSelect('p.extention')
+          ->addSelect('p.extension')
           ->addSelect('p.description')
           ->orderBy('i.id', 'DESC')
           ->setFirstResult($firstItem)
