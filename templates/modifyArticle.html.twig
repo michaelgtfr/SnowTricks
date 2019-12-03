@@ -1,0 +1,234 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+
+{% endblock %}
+
+{% block body %}
+    <section class="container">
+
+
+        <div class="row picturesAndMovies">
+            {% for picture in pictures %}
+                <div class="block_of_the_pictures col-sm-3">
+                    <div class="img_id_{{ picture.id }}">
+                        <img class="col-sm-12" name="{{ picture.id }}" src="/img/imgPost/{{ picture.name }}.{{ picture.extension }}" alt="{{ picture.description }}"/>
+                    </div>
+                    <div>
+                        <a class="add_the_input_picture" name="{{ picture.id }}" href="#">modifier</a>
+                        <a href="#">Supprimer</a>
+                    </div>
+                </div>
+            {%  endfor %}
+            {% for movie in movies %}
+                <div class="block_of_the_movies">
+                    <div class="link_id_{{ movie.id }}">
+                        <iframe name="{{ movie.id }}"
+                                src="{{ movie.link }}"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen>
+
+                        </iframe>
+                    </div>
+                    <div>
+                        <a class="add_the_input_movie" name="{{ movie.id }}" href="#">modifier</a>
+                        <a href="#">Supprimer</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="new_input_files"></div>
+        <div class="block_input_img">
+            <button id = "btn_input_img"> Valider les images </button>
+            <button id = "btn_input_link"> Valider les liens </button>
+        </div>
+        {{ form_start(form) }}
+        {{ form_end(form) }}
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        jQuery(document).ready( function() {
+            //permet l'affichage du formulaire de modification des images
+            jQuery('.add_the_input_picture').click( function(e) {
+                let name_of_picture = $(this).attr('name');
+
+                jQuery('.new_input_files').append('<div class="preview">\n' +
+                    '    <p>Aucun fichier sélectionné pour le moment</p>\n' +
+                    '  </div>' +
+                    '<label for="input_new_file">nouveau fichier</label>' +
+                    '<input type="file" ' +
+                    'id="input_new_file" ' +
+                    'class="input_new_file" ' +
+                    'name="'+ name_of_picture +'"/>' +
+                    '<button id = "fileSelect"> Valider le fichier </button>');
+
+                    e.preventDefault(); // empêche la navigation vers "#"
+                    // permet l'affichage des photos modifié
+                    jQuery('#fileSelect').click( function (e) {
+                        let block_new_input = document.querySelector('.new_input_files')
+                        let fichierSelectionne = document.querySelector('#input_new_file');
+                        let preview = document.querySelector('.preview');
+
+                        let name_of_picture_modify = document.querySelector('.img_id_'+name_of_picture+'');
+
+                        new HandleFiles(fichierSelectionne, preview, name_of_picture_modify, name_of_picture, block_new_input);
+                    });
+
+            });
+
+            // affiche le boutton de modification d'une video
+            jQuery('.add_the_input_movie').click(function(e) {
+                let name_of_movie = $(this).attr('name');
+
+                jQuery('.new_input_files').append('<div class="preview">\n' +
+                    '    <p>Aucun lien sélectionné pour le moment</p>\n' +
+                    '  </div>' +
+                    '<label for="input_new_url">nouveau lien</label>' +
+                    '<input type="url" ' +
+                    'id="input_new_url" ' +
+                    'class="input_new_url" ' +
+                    'name="'+ name_of_movie +'"/>' +
+                    '<button id = "fileSelectMovie"> Valider le lien </button>');
+
+                    e.preventDefault(); // empêche la navigation vers "#"
+                    jQuery('#fileSelectMovie').click( function () {
+                        let block_input_movie = document.querySelector('.link_id_'+name_of_movie);
+                        let urlSelect = document.querySelector('#input_new_url');
+                        let preview = document.querySelector('.preview');
+                        let block_input = document.querySelector('.new_input_files');
+
+                        new ManageLink(block_input_movie, urlSelect, preview, block_input);
+                    });
+            });
+
+            //fonction permettant l'enregistrement des photos par le serveur
+            jQuery('#btn_input_img').click( function(e) {
+                e.preventDefault();
+                let imgs = document.querySelectorAll(".obj");
+                for (let i = 0; i < imgs.length; i++) {
+                    new FileUpload(imgs[i], imgs[i].file);
+                }
+            });
+
+            //function récupérant les différents lien modifié
+            jQuery('#btn_input_link').click( function(e) {
+                e.preventDefault();
+                let new_link = document.querySelectorAll('.new_link');
+                for(let i = 0; i < new_link.length; i++) {
+                    new LinkUpload(new_link[i].name, new_link[i].src);
+                }
+            });
+
+            //function traitant les liens
+            function ManageLink(input_movie, url, preview, block_input) {
+                while(preview.firstChild) {
+                    preview.removeChild(preview.firstChild);
+                }
+                let src = url.value;
+
+                if(src.length === 0) {
+                    var para = document.createElement('p');
+                    para.textContent = 'Aucun lien actuellement sélectionné pour le téléchargement';
+                    preview.appendChild(para);
+                } else {
+                    while (block_input.firstChild) {
+                        block_input.removeChild(block_input.firstChild);
+                    }
+                }
+                let movie = input_movie.querySelector('iframe');
+                $(movie).attr('src', src);
+                movie.setAttribute('class', "new_link");
+            }
+
+            //function use of the page.
+            function HandleFiles(fichiersSelectionne, preview, name_of_picture_modify, name_of_picture, block_new_input ) {
+                while(preview.firstChild) {
+                    preview.removeChild(preview.firstChild);
+                }
+
+                var files = fichiersSelectionne.files;
+
+                if(files.length === 0) {
+                    var para = document.createElement('p');
+                    para.textContent = 'Aucun fichier actuellement sélectionné pour le téléchargement';
+                    preview.appendChild(para);
+                } else {
+                    while (name_of_picture_modify.firstChild) {
+                        name_of_picture_modify.removeChild(name_of_picture_modify.firstChild);
+                    }
+                    while (block_new_input.firstChild) {
+                        block_new_input.removeChild(block_new_input.firstChild);
+                    }
+
+                    for (var i = 0; i < files.length; i++) {
+
+                        var file = files[i];
+
+                        var imageType = /^image\//;
+
+                        if (!imageType.test(file.type)) {
+                            continue;
+                        }
+                        var img = document.createElement("img");
+                        img.classList.add("obj");
+                        img.setAttribute('name', name_of_picture);
+                        img.setAttribute('class', "obj col-sm-12");
+                        img.file = file;
+                        name_of_picture_modify.appendChild(img); // En admettant que "img" est l'élément div qui contiendra le contenu affiché.
+
+                        var reader = new FileReader();
+                        reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
+                        reader.readAsDataURL(file);
+
+                    }
+                }
+            }
+            //fonction permettant l'envoie au serveur
+            function FileUpload(img, file) {
+                $.ajax({
+                    url : '{{ path('app_modified_image_processing') }}',
+                    type : 'POST',
+                    data : 'name=' + img.name +
+                        '&src=' + img.src +
+                    '&type=' + file['type'],
+                    dataType : 'text',
+
+                    success : function(code_html, statut){ // success est toujours en place, bien sûr !
+                        console.log('felicitation:' +code_html +' et '+ statut);
+                    },
+                    error : function(resultat, statut, erreur){
+                        console.log('merde:' +resultat + ' et ' +statut + ' et ' + erreur);
+                    },
+                    complete : function(resultat, statut){
+                        console.log('marche' + resultat + 'et' + statut);
+                    },
+                });
+            }
+
+            //Function permettant l'envoie au serveur
+            function LinkUpload(name_link_Modify, src_link_modify) {
+                console.log(name_link_Modify);
+                $.ajax({
+                    url : '{{ path('app_modified_link_processing') }}',
+                    type : 'POST',
+                    data : 'name=' + name_link_Modify +
+                        '&src=' + src_link_modify,
+                    dataType : 'text',
+
+                    success : function(code_html, statut){ // success est toujours en place, bien sûr !
+                        console.log('felicitation:' +code_html +' et '+ statut);
+                    },
+                    error : function(resultat, statut, erreur){
+                        console.log('merde:' +resultat + ' et ' +statut + ' et ' + erreur);
+                    },
+                    complete : function(resultat, statut){
+                        console.log('marche' + resultat + 'et' + statut);
+                    },
+                });
+            }
+        });
+    </script>
+{% endblock %}

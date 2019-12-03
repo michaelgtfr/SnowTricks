@@ -25,7 +25,6 @@ class CreateArticleController extends AbstractController
      */
     public function createArticle(Request $request, EntityManagerInterface $em)
     {
-        //$this->getUser()->getId());
         $item = new Item;
         $form = $this->createForm(CreateArticleForm::class, $item);
 
