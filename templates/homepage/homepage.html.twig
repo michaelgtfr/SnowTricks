@@ -23,7 +23,7 @@
                                 <a class="title_item col-xs-6" href="{{ path('app_detail', {id: item.id}) }}">{{ item.title|slice(0,8) }}</a>
                                 {% if item is defined %}
                                     <a class="modify_item fa fa-pen-fancy col-xs-3" href="{{ path('app_modify', {id: item.id}) }}"></a>
-                                    <a class="delete_item fa fa-trash-alt text-right col-xs-3" href="{{ path('app_delete', {id: item.id}) }}"></a>
+                                    <a class="delete_item fa fa-trash-alt text-right col-xs-3" href="{{ path('app_delete_article', {id: item.id}) }}"></a>
                                 {% endif %}
                             </div>
                         </div>

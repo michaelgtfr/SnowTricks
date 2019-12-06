@@ -14,7 +14,7 @@
                         <div class="block-modify offset-lg-8 col-lg-1 ">
                             {% if pictures is defined %}
                                     <a class="modify_item fa fa-pen-fancy col-xs-3" href="{{ path('app_modify', {id: item.id}) }}"></a>
-                                    <a class="delete_item fa fa-trash-alt text-right col-xs-3" href="{{ path('app_delete', {id: item.id}) }}"></a>
+                                    <a class="delete_item fa fa-trash-alt text-right col-xs-3" href="{{ path('app_delete_article', {id: item.id}) }}"></a>
                             {% endif %}
                         </div>
                         {% for picture in pictures %}
