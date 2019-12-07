@@ -37,8 +37,7 @@ class ForgotPassword extends AbstractController
                 ->findOneBy(['email' => $data->getEmail()]);
 
             if (!empty($user)) {
-                $mailer = (new ForgotPasswordMailer())->forgotPasswordMailer($mailer, $user);
-                dump($mailer);
+                (new ForgotPasswordMailer())->forgotPasswordMailer($mailer, $user);
                 $this ->addFlash( 'success' , 'Message envoyé, vous pouvez confirmer le changement 
                 de mot de passe en cliquant sur l\'email envoyé');
                 return $this->redirectToRoute("app_homepage");
