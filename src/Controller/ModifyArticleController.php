@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ModifyArticleController extends AbstractController
 {
     /**
-     * @Route("/modifyArticle/{$id}", name="app_modify")
+     * @Route("/profile/modifyArticle/{$id}", name="app_modify")
      */
     public function modifyArticle(Request $request, EntityManagerInterface $em)
     {
