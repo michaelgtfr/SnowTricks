@@ -16,10 +16,6 @@ class HomepageController extends AbstractController
      */
     public function Homepage(Request $request)
     {
-        if(!empty($request->get('message'))) {
-            $message = $request->get('message');
-        }
-
         /*récupération des figures dans la base de données */
         $items = $this->getDoctrine()
             ->getRepository(Item::class)
@@ -27,20 +23,10 @@ class HomepageController extends AbstractController
 
         $numberItems = count($items);
 
-        if ($numberItems >= 10 ) {
-            return $moreItems = $this->getDoctrine()
-                ->getRepository(Item::class)
-                ->listofArticle(10, $numberItems);
-        } else {
-            $moreItems = null;
-        }
-
         /*envoyer le éléments a la vue */
         return $this->render('homepage/homepage.html.twig',[
             'items'=> $items,
-            'moreItems' => $moreItems,
             'numberItems' => $numberItems,
-            'message' => $message ?? null
         ]);
     }
 }
