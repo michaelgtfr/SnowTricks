@@ -19,18 +19,30 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
-    public function commentArticle($id)
+    public function commentArticle($id, $firstNumberItem)
     {
         return $this->createQueryBuilder('c')
-            ->innerJoin('c.author', 'u')
+            ->andWhere('c.article = :id')
+            ->setParameter('id', $id)
+            ->leftJoin('c.author', 'u')
             ->addSelect('c.dateCreate')
             ->addSelect('c.comment')
             ->addSelect('u.name')
-            ->andWhere('c.article = :id')
-            ->setParameter('id', $id)
+            ->setMaxResults(10)
+            ->setFirstResult($firstNumberItem)
             ->orderBy('c.id', 'DESC')
             ->getQuery()
             ->getResult();
+    }
+
+    public function countCommentArticle($id)
+    {
+        return $this->createQueryBuilder('c')
+            ->select('count(c.article)')
+            ->andWhere('c.article = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     // /**

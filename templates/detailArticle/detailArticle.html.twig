@@ -63,7 +63,9 @@
                 </div>
             </div>
 
-            {{ form(form) }}
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                {{ form(form) }}
+            {% endif %}
 
             <div class="container">
                 <div class="row">
@@ -83,18 +85,59 @@
         </div>
     </div>
 </section>
-
+<section class="more_item">
+        <div class="container">
+            <div class="block_btn_more text-center col-xs-12">
+                <button id="btn-more" class="btn btn-warning"><i class="fa fa-angle-down"></i>Afficher plus</button>
+            </div>
+        </div>
+</section>
 {%  endblock %}
 
 {% block javascripts %}
     <script>
         jQuery(document).ready( function () {
+            let number_comment_load = 10;
+            let number_comment_in_the_bdd = {{ numberItems }};
+            let id_item = {{ item.id }};
+            if (number_comment_load >= number_comment_in_the_bdd) {
+                $(".more_item").hide();
+            }
+            $("#btn-more").click(function(e){
+                e.preventDefault();
+                $.ajax({
+                    url: '{{ path('app_comment_pagination') }}',
+                    type: 'POST',
+                    data: 'numberCommentLoad=' + number_comment_load +
+                        '&id=' + id_item,
+                    dataType: 'text',
+
+                    success : function(code_html) { // success est toujours en place, bien sûr !
+                        let newComment = JSON.parse(code_html);
+                        console.log(newComment);
+                        number_comment_load += 10;
+                        for (let i = 0; i < newComment.length; i++) {
+                            jQuery('.block-comment').append('' +
+                                '<div class="comment col-lg-12 col-xs-12 text-center">\n'+
+                                '   <p>'+ newComment[i].comment +'</p>\n' +
+                                '</div>\n' +
+                                '<div class="author-and-date col-lg-12 col-xs-12 text-center">\n' +
+                                '   <p>auteur: '+ newComment[i].name +' le '+  newComment[i].dateCreate['date'] + '</p>\n' +
+                                '</div>');
+                            if (number_comment_load >= number_comment_in_the_bdd) {
+                                $(".more_item").hide();
+                            }
+                        }
+                    }
+                })
+            });
             $('.carousel').carousel({interval: false});
             let numberThumb = $('.thumb').length;
             for(let counter = 0; counter < numberThumb; counter++)
             {
                 $('.thumb').eq(counter).attr('data-slide-to', counter);
             }
+
         });
     </script>
 {% endblock %}
