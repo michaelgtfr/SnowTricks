@@ -1,28 +1,42 @@
 <?php
+/**
+ * User: michaelgtfr
+ */
 
 namespace App\Controller;
-
 
 use App\Entity\Comment;
 use App\Entity\Item;
 use App\Form\CommentForm;
+use App\Service\SecurityBreachProtection;
+use App\TreatmentForm\CommentDetailArticleTreatment;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 
 class DetailArticleController extends AbstractController
 {
     /**
-     * @return \Symfony\Component\HttpFoundation\Response
-     *
+     * Display of the details of an article and a form for comments
      * @Route("/detail/{id}", name="app_detail")
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param Security $security
+     * @param SecurityBreachProtection $protect
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Exception
      */
-    public function detailArticle(Request $request, EntityManagerInterface $em, Security $security)
+    public function detailArticle(Request $request, EntityManagerInterface $em,
+                                  Security $security, SecurityBreachProtection $protect)
     {
+        //Check the GET 'id'
+        $id = $protect->textProtect($request->get('id'));
+
         $item = $em->getRepository(Item::class)
-                    ->find($request->get('id'));
+                    ->find($id);
 
         //form of comment in the detail of article
         $objectComment = new Comment();
@@ -30,16 +44,18 @@ class DetailArticleController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
+            // data processing
+            $treatment = (new CommentDetailArticleTreatment())
+                ->treatment($item, $form, $security, $em);
 
-            $data->setDateCreate(new \DateTime());
-            $security->getUser()->addComment($data);
-            $item->addComment($data);
-
-            $em->persist($data);
-            $em->flush();
-
-            $this ->addFlash( 'success' , 'votre commentaire à été enregistré !');
+            if ($treatment == true) {
+                $this ->addFlash( 'success' , 'votre commentaire à été enregistré !');
+            } else {
+                $this ->addFlash(
+                    'error' ,
+                    'Désolé, votre commentaire n\' pas été pris en compte veuillez réessayer ultérieurement.'
+                );
+            }
         }
 
         $pictures = $item->getPictures();

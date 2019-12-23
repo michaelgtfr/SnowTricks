@@ -1,13 +1,11 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: mickd
+ * User: michaelgtfr
  * Date: 07/12/2019
  * Time: 09:36
  */
 
 namespace App\Form;
-
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -17,6 +15,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class ResetPasswordForm extends AbstractType
 {
+    /**
+     * Password change form
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -28,7 +31,7 @@ class ResetPasswordForm extends AbstractType
                 'mapped' => false
             ])
             ->add('passwordTwo', PasswordType::class, [
-                'label' => 'Ré-écrivez votre mot de passe',
+                'label' => 'Réécrivez votre mot de passe',
                 'mapped' => false
             ])
             ->add( 'validate' , SubmitType::class, [

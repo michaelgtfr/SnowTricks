@@ -1,8 +1,10 @@
 <?php
+/**
+ * User: michaelgtfr
+ */
 
 namespace App\Form;
 
-use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -14,10 +16,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class RegisterForm extends AbstractType
 {
-
     /**
      * Creation of the registration form
-     *
      * @param FormBuilderInterface $builder
      * @param array $options
      */

@@ -1,13 +1,11 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: mickd
+ * User: michaelgtfr
  * Date: 06/12/2019
  * Time: 20:30
  */
 
 namespace App\Service;
-
 
 use App\Entity\User;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -16,11 +14,10 @@ use Symfony\Component\Mailer\MailerInterface;
 class ForgotPasswordMailer
 {
     /**
-     * email sent to be able to change your password thanks to the link sent
-     *
+     * Email sent to be able to change your password thanks to the link sent
      * @param MailerInterface $mailer
-     * @param $adresseUser
-     * @param $key
+     * @param User $user
+     * @return bool
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
      */
     public function forgotPasswordMailer(MailerInterface $mailer,User $user)
@@ -35,7 +32,8 @@ class ForgotPasswordMailer
                 'key' => $user->getConfirmationKey(),
             ])
         ;
-
         $mailer->send($email);
+
+        return true;
     }
 }

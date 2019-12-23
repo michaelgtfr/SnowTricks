@@ -1,10 +1,14 @@
 <?php
+/**
+ * User: michaelgtfr
+ */
 
 namespace App\Repository;
 
 use App\Entity\Comment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * @method Comment|null find($id, $lockMode = null, $lockVersion = null)
@@ -35,42 +39,18 @@ class CommentRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     * @throws NonUniqueResultException
+     */
     public function countCommentArticle($id)
     {
-        return $this->createQueryBuilder('c')
-            ->select('count(c.article)')
-            ->andWhere('c.article = :id')
-            ->setParameter('id', $id)
-            ->getQuery()
-            ->getSingleScalarResult();
+            return $this->createQueryBuilder('c')
+                ->select('count(c.article)')
+                ->andWhere('c.article = :id')
+                ->setParameter('id', $id)
+                ->getQuery()
+                ->getSingleScalarResult();
     }
-
-    // /**
-    //  * @return Comment[] Returns an array of Comment objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Comment
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

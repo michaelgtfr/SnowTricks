@@ -1,86 +1,75 @@
 <?php
+/**
+ * User: michaelgtfr
+ */
 
 namespace App\Controller;
 
-
 use App\Entity\Item;
-use App\Entity\Movie;
-use App\Entity\Picture;
 use App\Form\ModifyArticleForm;
-use App\Service\ProcessingFiles;
+use App\Service\SecurityBreachProtection;
+use App\TreatmentForm\ModifyArticleTreatment;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ModifyArticleController extends AbstractController
 {
     /**
+     * modification of an article via a pre-filled form
      * @Route("/profile/modifyArticle/{$id}", name="app_modify")
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param SecurityBreachProtection $protect
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
-    public function modifyArticle(Request $request, EntityManagerInterface $em)
+    public function modifyArticle(Request $request, EntityManagerInterface $em, SecurityBreachProtection $protect)
     {
-        //recupérer tout les éléments de l'article
+        //Check the GET 'id'
+        $id = $protect->textProtect($request->get('id'));
+
+        //Get all the elements of the article
         $item = $em->getRepository(Item::class)
-            ->find($request->get('id'));
+            ->find($id);
 
         $pictures = $item->getPictures();
 
         $movies = $item->getMovies();
 
-
-        //creation du formulaire
+        //Form creation
         $form = $this->createForm(ModifyArticleForm::class, $item);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            //Recovery and check of different data
+            $files = $protect->fileProtect($form->get('files')->getData());
+            $movies = $protect->urlProtect($form->get('movies')->getData());
+            $item->setTitle($protect->textProtect($item->getTitle()));
+            $item->setChapo($protect->textProtect($item->getChapo()));
+            $item->setContent($protect->textProtect($item->getContent()));
 
+            //Treatment of data
+            $treatment = (new ModifyArticleTreatment())->treatment($this->getUser(),$files, $movies, $item, $em);
 
-            //recovery of different data
-            $data = $form->getData();
-            $files = $form->get('files')->getData();
-            $movies = $form->get('movies')->getData();
-
-            //creation of the new name and its transfer for pictures
-            foreach ($files as &$value) {
-                $namePictures = new ProcessingFiles();
-                $value = $namePictures->processingFiles($value, $value->guessExtension(), 'imgPost');
+            if ($treatment == true) {
+                $this->addFlash(
+                    'success',
+                    'Félicitation votre article à été modifié vous pouvez dès a présent le voir!'
+                );
+                return $this ->redirectToRoute( 'app_homepage');
             }
-
-            //inserting user in the Item entity
-            $item->setUser($this->getUser());
-
-            //inserting photos in the Item entity
-            foreach ($files as &$value) {
-                $picture = new Picture();
-                $nameElement = pathinfo($value);
-                $picture->setName(strval($nameElement['filename']));
-                $picture->setExtension(strval($nameElement['extension']));
-                $picture->setDescription('photo_'.$nameElement['filename']);
-                $item->addPicture($picture);
-            }
-
-            //inserting movie in the Item entity
-            foreach ($movies as &$value) {
-                $movieEntity = new Movie();
-                $movieEntity->setLink($value);
-                $item->addMovie($movieEntity);
-            }
-
-            $item->setDateCreate( new \DateTime());
-
-            $em->flush();
-
-            $message = 'Félicitation votre article à été modifié vous pouvez dès a présent le voir!';
-
-            return $this ->redirectToRoute( 'app_homepage', ['message' => $message] );
+            $this->addFlash(
+                'error',
+                'Désoler, un problème à eu lieu veuillez réessayer votre modification !'
+            );
         }
-
         return $this->render('modifyArticle.html.twig', [
             'form' => $form->createView(),
             'pictures' => $pictures,
             'movies' => $movies,
-            'idItem' => $request->get('id')
+            'idItem' => $id
         ]);
     }
 }

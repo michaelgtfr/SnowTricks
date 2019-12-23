@@ -297,10 +297,10 @@
                     dataType : 'text',
 
                     success : function(code_html, statut){ // success est toujours en place, bien sûr !
-                        console.log('felicitation:' +code_html +' et '+ statut);
+                        alert(code_html);
                     },
-                    error : function(resultat, statut, erreur){
-                        console.log('merde:' +resultat + ' et ' +statut + ' et ' + erreur);
+                    error : function(resultat, statut){
+                        alert(resultat + ' et ' +statut);
                     },
                     complete : function(resultat, statut){
                         console.log('marche' + resultat + 'et' + statut);
@@ -337,11 +337,11 @@
                     data : 'name=' + name_picture,
                     dataType : 'text',
 
-                    success : function(){
-                        console.log('felicitation sa a fonctionné');
+                    success : function(code_html){
+                        alert(code_html);
                     },
-                    error : function(resultat, statut, erreur){
-                        console.log('merde:' +resultat + ' et ' +statut + ' et ' + erreur);
+                    error : function(resultat){
+                        alert(resultat);
                     },
                     complete : function(resultat, statut){
                         console.log('marche' + resultat + 'et' + statut);

@@ -1,7 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: mickd
+ * User: michaelgtfr
  * Date: 06/11/2019
  * Time: 19:07
  */
@@ -19,7 +18,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class CreateArticleForm extends AbstractType
 {
-
+    /**
+     * Article creation form
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

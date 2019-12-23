@@ -1,4 +1,7 @@
 <?php
+/**
+ * User: michaelgtfr
+ */
 
 namespace App\Form;
 
@@ -11,7 +14,6 @@ class CommentForm extends AbstractType
 {
     /**
      * Creation of the comment form
-     *
      * @param FormBuilderInterface $builder
      * @param array $options
      */

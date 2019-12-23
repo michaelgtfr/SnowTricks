@@ -1,13 +1,11 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: mickd
+ * User: michaelgtfr
  * Date: 19/11/2019
  * Time: 16:02
  */
 
 namespace App\Form;
-
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -20,6 +18,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class ModifyArticleForm extends AbstractType
 {
+    /**
+     * Article modification form
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

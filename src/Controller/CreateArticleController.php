@@ -1,7 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: mickd
+ * User: michaelgtfr
  * Date: 06/11/2019
  * Time: 19:04
  */
@@ -9,72 +8,61 @@
 namespace App\Controller;
 
 use App\Entity\Item;
-use App\Entity\Movie;
-use App\Entity\Picture;
 use App\Form\CreateArticleForm;
-use App\Service\ProcessingFiles;
+use App\Service\SecurityBreachProtection;
+use App\TreatmentForm\CreateArticleTreatment;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class CreateArticleController extends AbstractController
 {
     /**
      * @Route("/profile/createArticle", name="app_createArticle")
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param SecurityBreachProtection $protect
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
-    public function createArticle(Request $request, EntityManagerInterface $em)
+    public function createArticle(Request $request, EntityManagerInterface $em, SecurityBreachProtection $protect)
     {
         $item = new Item;
         $form = $this->createForm(CreateArticleForm::class, $item);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            //recovery and check of different data
+            $files = $protect->fileProtect($form->get('files')->getData());
+            $movies = $protect->urlProtect($form->get('movies')->getData());
+            $item->setTitle($protect->textProtect($form->get('title')->getData()));
+            $item->setChapo($protect->textProtect($form->get('chapo')->getData()));
+            $item->setContent($protect->textProtect($form->get('content')->getData()));
 
-            //recovery of different data
-            $data = $form->getData();
-            $files = $form->get('files')->getData();
-            $movies = $form->get('movies')->getData();
+            if ($files !== false) {
+                if ($movies !== false) {
+                    // data processing
+                    $treatment = (new CreateArticleTreatment())
+                        ->treatment($this->getUser(), $files, $movies, $item, $em);
 
-            //creation of the new name and its transfer for pictures
-            foreach ($files as &$value) {
-                $namePictures = new ProcessingFiles();
-                $value = $namePictures->processingFiles($value, $value->guessExtension(), 'imgPost');
+                    if ($treatment == true) {
+                        $this->addFlash(
+                            'success',
+                            'Félicitation votre article à été créer vous pouvez dès a présent le voir!'
+                        );
+                        return $this ->redirectToRoute( 'app_homepage');
+                    }
+                }
             }
-
-            //inserting user in the Item entity
-            $item->setUser($this->getUser());
-
-            //inserting photos in the Item entity
-            foreach ($files as &$value) {
-                $picture = new Picture();
-                $nameElement = pathinfo($value);
-                $picture->setName(strval($nameElement['filename']));
-                $picture->setExtension(strval($nameElement['extension']));
-                $picture->setDescription('photo_'.$nameElement['filename']);
-                $item->addPicture($picture);
-            }
-
-            //inserting movie in the Item entity
-            foreach ($movies as &$value) {
-                $movieEntity = new Movie();
-                $movieEntity->setLink($value);
-                $item->addMovie($movieEntity);
-            }
-
-            $item->setDateCreate( new \DateTime());
-
-            $em->persist($item);
-            $em->flush();
-
-            $message = 'Félicitation votre compte article à été créer vous pouvez dès a présent le voir!';
-
-            return $this ->redirectToRoute( 'app_homepage', ['message' => $message] );
+            $this->addFlash(
+                'error',
+                'Désoler une erreur est survenue, veuillez réessayer ou envoyer un message à l\'administrateur!'
+            );
+            return $this ->redirectToRoute( 'app_homepage');
         }
-
-        return $this->render('createArticle\createArticle.html.twig', [
+        return $this->render('createArticle/createArticle.html.twig', [
             'form' => $form->createView(),
         ]);
     }
 }
-

@@ -1,29 +1,34 @@
 <?php
-
+/**
+ * User: michaelgtfr
+ */
 namespace App\Controller;
 
 use App\Entity\Item;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class HomepageController extends AbstractController
 {
     /**
-     * homepage on the website displays blog posts
-     *
+     * Homepage on the website displays blog posts
      * @Route("/", name="app_homepage")
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function Homepage(Request $request)
+    public function Homepage()
     {
-        /*récupération des figures dans la base de données */
+        //Recovery of figures in the database
         $items = $this->getDoctrine()
             ->getRepository(Item::class)
-            ->listOfArticle(0,9);
+            ->listOfArticle(0,11);
 
-        $numberItems = count($items);
+        //Number items in the bdd
+        $numberItems = $this->getDoctrine()
+        ->getRepository(Item::class)
+        ->countArticle();
 
-        /*envoyer le éléments a la vue */
+        //send items to view
         return $this->render('homepage/homepage.html.twig',[
             'items'=> $items,
             'numberItems' => $numberItems,
