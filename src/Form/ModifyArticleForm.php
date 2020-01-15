@@ -19,7 +19,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 class ModifyArticleForm extends AbstractType
 {
     /**
-     * Article modification form
+     * article modification form
      * @param FormBuilderInterface $builder
      * @param array $options
      */
@@ -40,14 +40,14 @@ class ModifyArticleForm extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
-                'label' => 'Photo( taille max: 2mo, type: jpg, jpeg, png)'
+                'label' => false
             ])
             ->add('movies', CollectionType::class, [
                 'entry_type' => UrlType::class,
                 'entry_options' => [
                     'attr' => [ 'class' => 'movies-box' ],
                 ],
-                'label' => 'Lien vidéo',
+                'label' => false,
                 'mapped' => false,
                 'allow_add' => true,
                 'allow_delete' => true,
@@ -58,7 +58,7 @@ class ModifyArticleForm extends AbstractType
                 'label' => 'Contenu'
             ])
             ->add('validate', SubmitType::class, [
-                'label' => 'Valider'
+                'label' => 'Valider la modification'
             ]);
     }
 }

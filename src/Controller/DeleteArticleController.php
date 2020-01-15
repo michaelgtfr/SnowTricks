@@ -24,7 +24,7 @@ class DeleteArticleController extends AbstractController
      * @param EntityManagerInterface $em
      * @param SecurityBreachProtection $protect
      * @return \Symfony\Component\HttpFoundation\Response
-     * @Route("/deleteArticle/{$id}", name="app_delete_article")
+     * @Route("/deleteArticle", name="app_delete_article")
      */
     public function deleteArticle(Request $request, EntityManagerInterface $em, SecurityBreachProtection $protect)
     {

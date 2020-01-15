@@ -59,6 +59,9 @@ class DetailArticleController extends AbstractController
         }
 
         $pictures = $item->getPictures();
+        if(!$pictures[0]) {
+            $pictures = null;
+        }
 
         $movies = $item->getMovies();
 
@@ -68,7 +71,7 @@ class DetailArticleController extends AbstractController
         $numberItems = $em->getRepository(Comment::class)
                     ->countCommentArticle($request->get('id'));
 
-        return $this->render('detailArticle/detailArticle.html.twig', [
+        return $this->render('article/detailArticle.html.twig', [
             'item' => $item,
             'pictures' => $pictures,
             'movies' => $movies,

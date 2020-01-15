@@ -60,7 +60,7 @@ class ResetPassword extends AbstractController
                 }
                 $this ->addFlash( 'error' , 'Vos mot de passe ou vos emails sont différents');
             }
-            return $this ->render( 'forgotPassword.html.twig', [
+            return $this ->render( 'security/forgotPassword.html.twig', [
                 'form' => $form->createView(),
             ]);
         }

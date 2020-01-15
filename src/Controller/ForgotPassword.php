@@ -58,7 +58,7 @@ class ForgotPassword extends AbstractController
             }
             $this ->addFlash( 'error' , 'l\'email envoyé est incorrect veuillez vérifier votre email');
         }
-        return $this ->render( 'forgotPassword.html.twig', [
+        return $this ->render( 'security/forgotPassword.html.twig', [
             'form' => $form->createView(),
             ]);
     }

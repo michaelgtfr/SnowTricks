@@ -18,7 +18,7 @@ class ModifyArticleController extends AbstractController
 {
     /**
      * modification of an article via a pre-filled form
-     * @Route("/profile/modifyArticle/{$id}", name="app_modify")
+     * @Route("/profile/modifyArticle", name="app_modify")
      * @param Request $request
      * @param EntityManagerInterface $em
      * @param SecurityBreachProtection $protect
@@ -65,7 +65,7 @@ class ModifyArticleController extends AbstractController
                 'Désoler, un problème à eu lieu veuillez réessayer votre modification !'
             );
         }
-        return $this->render('modifyArticle.html.twig', [
+        return $this->render('article/modifyArticle.html.twig', [
             'form' => $form->createView(),
             'pictures' => $pictures,
             'movies' => $movies,

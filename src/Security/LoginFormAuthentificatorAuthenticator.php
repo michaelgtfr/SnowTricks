@@ -71,7 +71,7 @@ class LoginFormAuthentificatorAuthenticator extends AbstractFormLoginAuthenticat
 
         if (!$user) {
             // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Email could not be found.');
+            throw new CustomUserMessageAuthenticationException('L\'email est introuvable.');
         }
 
         return $user;
@@ -79,7 +79,13 @@ class LoginFormAuthentificatorAuthenticator extends AbstractFormLoginAuthenticat
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+        $correspondingAccount = $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+
+        if (!$correspondingAccount) {
+            throw new CustomUserMessageAuthenticationException('le mot de passe n\'est pas bon.');
+        }
+
+        return $correspondingAccount;
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)

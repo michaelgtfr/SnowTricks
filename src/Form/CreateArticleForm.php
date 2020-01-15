@@ -19,7 +19,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 class CreateArticleForm extends AbstractType
 {
     /**
-     * Article creation form
+     * article creation form
      * @param FormBuilderInterface $builder
      * @param array $options
      */
@@ -27,7 +27,7 @@ class CreateArticleForm extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'label' => 'titre'
+                'label' => 'Titre'
             ])
             ->add('files', CollectionType::class, [
                 'entry_type' => FileType::class,
@@ -40,18 +40,18 @@ class CreateArticleForm extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
-                'label' => 'Photo( taille max: 2mo, type: jpg, jpeg, png)'
+                'label' => false,
             ])
             ->add('movies', CollectionType::class, [
                 'entry_type' => UrlType::class,
                 'entry_options' => [
                     'attr' => [ 'class' => 'movies-box' ],
                 ],
-                'label' => 'Lien vidéo',
                 'mapped' => false,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'prototype' => true
+                'prototype' => true,
+                'label' => false,
             ])
             ->add('chapo', TextType::class)
             ->add('content', TextareaType::class, [

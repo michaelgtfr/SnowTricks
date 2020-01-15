@@ -1,0 +1,70 @@
+/* part pictures and movies */
+.picturesAndMovies
+{
+    padding-top: 20px;
+    padding-bottom: 50px;
+    background-color: #eeeeee;
+}
+
+.block_btn_asynchronous
+{
+    margin: 5px;
+}
+.add_the_input_picture, .add_the_input_movie
+{
+    color: white;
+    padding: 5px;
+    background-color: black;
+    box-shadow: 0 1px 1px gray;
+    border-radius: 5px;
+}
+
+.delete_the_picture, .delete_the_link
+{
+    color: white;
+    padding: 5px;
+    background-color: #B0413E;
+    box-shadow: 0 1px 1px gray;
+    border-radius: 5px;
+}
+
+.block_input_img
+{
+    margin-top: 10px;
+    padding-bottom: 50px;
+}
+
+.new_input_files
+{
+    padding-top: 20px;
+}
+
+#fileSelect, #fileSelectMovie
+{
+    margin-top: 5px;
+    margin-bottom: 30px;
+}
+
+.balise_responsive
+{
+    transform: none !important;
+    position: relative !important;
+    will-change: unset !important;
+}
+
+/* part form */
+
+label, legend
+{
+    font-weight: bold;
+}
+
+@media all and (max-width: 540px)
+{
+    /*part picture and movie*/
+    .dropdown-menu
+    {
+        transform: translate3d(0, 59px,0) !important;
+        width: 100%;
+    }
+}

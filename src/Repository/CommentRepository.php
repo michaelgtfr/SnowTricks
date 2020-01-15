@@ -32,6 +32,7 @@ class CommentRepository extends ServiceEntityRepository
             ->addSelect('c.dateCreate')
             ->addSelect('c.comment')
             ->addSelect('u.name')
+            ->addSelect('u.picture')
             ->setMaxResults(10)
             ->setFirstResult($firstNumberItem)
             ->orderBy('c.id', 'DESC')

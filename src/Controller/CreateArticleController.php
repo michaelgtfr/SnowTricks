@@ -61,7 +61,7 @@ class CreateArticleController extends AbstractController
             );
             return $this ->redirectToRoute( 'app_homepage');
         }
-        return $this->render('createArticle/createArticle.html.twig', [
+        return $this->render('article/createArticle.html.twig', [
             'form' => $form->createView(),
         ]);
     }

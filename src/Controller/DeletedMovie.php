@@ -40,7 +40,7 @@ class DeletedMovie extends AbstractController
             ->find($name);
 
         if ($checkDeleteMovie == null) {
-            return new Response('', 200);
+            return new Response('La vidéo à ètè supprimé', 200);
         }
         return new Response('Désolé mais un problème à eu lieu, veuillez réessayer ultérieurement', 500);
     }

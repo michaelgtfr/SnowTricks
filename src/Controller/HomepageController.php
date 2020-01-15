@@ -29,7 +29,7 @@ class HomepageController extends AbstractController
         ->countArticle();
 
         //send items to view
-        return $this->render('homepage/homepage.html.twig',[
+        return $this->render('article/homepage.html.twig',[
             'items'=> $items,
             'numberItems' => $numberItems,
         ]);

@@ -53,6 +53,7 @@ class CreateArticleTreatment
         //Inserting movie in the Item entity
         foreach ($movies as &$value) {
             $movieEntity = new Movie();
+            $value = str_replace('watch?v=', 'embed/', $value);
             $movieEntity->setLink($value);
             $item->addMovie($movieEntity);
         }

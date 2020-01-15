@@ -29,7 +29,6 @@ class ModifiedImageProcessing extends AbstractController
                                             SecurityBreachProtection $protect)
     {
         if ($request->isXmlHttpRequest()) {
-
             //Recovery of useful variables and the binary code of the image and checking them.
             $name = $protect->textProtect($request->get('name'));
             $src = $protect->textProtect($request->get('src'));
@@ -48,7 +47,6 @@ class ModifiedImageProcessing extends AbstractController
             file_put_contents($file, $imgCreate);
 
             //Registration in the database
-            var_dump($name);
             if (file_exists($file)) {
 
                 $picture = $em->getRepository(Picture::class)
@@ -62,7 +60,7 @@ class ModifiedImageProcessing extends AbstractController
                 $picture->setDescription('photo_'.$nameFile);
                 $em->flush();
 
-                return new Response('L\'image à été modifié !!', 200);
+                return new Response("L'image à été modifié !!", 200);
             }
         }
         return new Response("Désoler, un problème à eu lieu, veuillez réessayer ultérieurement", 500);

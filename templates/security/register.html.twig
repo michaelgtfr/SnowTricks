@@ -1,19 +1,35 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-
+    <link rel="stylesheet" href="{{ asset('css/security/register.css') }}" />
 {% endblock %}
 
 {% block title %}Log out!{% endblock %}
+
 {% block body %}
-   {{ form(form) }}
+    <!--form of the registration-->
+    <section class="container">
+        <div class="row">
+            <div class="subtitle col-md-12 text-center">
+                <h3>Inscription</h3>
+            </div>
+            <div class="forms col-md-12">
+                {{ form_start(form) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.name) }}
+                {{ form_row(form.password) }}
+                {{ form_row(form.passwordCheck) }}
+                {{ form_row(form.picture) }}
+                {{ form_row(form.presentation) }}
+                <div class="text-center">
+                    {{ form_row(form.validate) }}
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </section>
 {% endblock %}
 
 {% block  javascripts %}
-<script>
-   $("input[type=file]").change(function (e){
-      $(this).next('.custom-file-label').text(e.target.files[0].name);
-   });
-   $(".custom-file-label" ).attr( "data-browse", "Choisir" );
-</script>
+    <script src="{{ asset('js/functionJs/operationFileForm.js') }}"></script>
 {% endblock %}

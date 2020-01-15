@@ -28,16 +28,19 @@ class ModifiedLinkProcessing extends AbstractController
     public function modifiedLinkProcessing(Request $request, EntityManagerInterface $em,
                                            SecurityBreachProtection $protect)
     {
-        //Recovery of modified links and their verification
-        $name = $protect->textProtect($request->get('name'));
-        $src = $protect->textProtect($request->get('src'));
+        if ($request->isXmlHttpRequest()) {
+            //Recovery of modified links and their verification
+            $name = $protect->textProtect($request->get('name'));
+            $src = $protect->textProtect($request->get('src'));
 
-        $movie = $em->getRepository(Movie::class)
-            ->find($name);
+            $movie = $em->getRepository(Movie::class)
+                ->find($name);
 
-        $movie->setLink($src);
-        $em->flush();
+            $movie->setLink($src);
+            $em->flush();
 
-        return new Response('Le lien à été modifié', 200);
+            return new Response('Le lien à été modifié', 200);
+        }
+        return new Response("Désoler, un problème à eu lieu, veuillez réessayer ultérieurement", 500);
     }
 }
