@@ -2,6 +2,10 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/security/register.css') }}" />
+    <!--js for the captcha-->
+    <script src="https://www.google.com/recaptcha/api.js"
+            async defer>
+    </script>
 {% endblock %}
 
 {% block title %}Log out!{% endblock %}
@@ -21,6 +25,10 @@
                 {{ form_row(form.passwordCheck) }}
                 {{ form_row(form.picture) }}
                 {{ form_row(form.presentation) }}
+
+                <!--captcha-->
+                <div class="g-recaptcha col-md-12" data-sitekey="6Leiuc8UAAAAAJ8Ugbs2DulrG-uzD3568muQ9OhV"></div>
+
                 <div class="text-center">
                     {{ form_row(form.validate) }}
                 </div>

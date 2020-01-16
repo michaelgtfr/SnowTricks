@@ -7,6 +7,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegisterForm;
+use App\Service\CaptchaProtection;
 use App\Service\SecurityBreachProtection;
 use App\TreatmentForm\RegistrationTreatment;
 use Doctrine\ORM\EntityManagerInterface;
@@ -39,41 +40,51 @@ class RegistrationController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            //Check the password
-            $passwordOne = $protect->textProtect($form->get('password')->getData());
-            $passwordTwo = $protect->textProtect($form->get('passwordCheck')->getData());
+            //Check the captcha protection
+            $captcha = (new CaptchaProtection(
+                $request->get('g-recaptcha-response'),
+                $request->getClientIp(),
+                $request->server->get('CLE_SECURITY_BACK_END')
+            ))
+            ->serviceCaptcha();
 
-            if(!empty($passwordOne) == !empty($passwordTwo)) {
-                //Check the data
-                $extensionFiles = $protect->textProtect($form->get('picture')->getData()->guessExtension());
-                $data = $form->getData();
-                $user->setEmail($protect->emailProtect($user->getEmail()));
-                $user->setName($protect->textProtect($user->getName()));
-                $user->setPresentation($protect->textProtect($user->getPresentation()));
+            if ($captcha === true) {
+                //Check the password
+                $passwordOne = $protect->textProtect($form->get('password')->getData());
+                $passwordTwo = $protect->textProtect($form->get('passwordCheck')->getData());
 
-                //Data processing
-                $treatment = (new RegistrationTreatment())->treatment(
-                    $user,
-                    $data,
-                    $extensionFiles,
-                    $passwordEncoder,
-                    $mailer,
-                    $em);
+                if(!empty($passwordOne) == !empty($passwordTwo)) {
+                    //Check the data
+                    $extensionFiles = $protect->textProtect($form->get('picture')->getData()->guessExtension());
+                    $data = $form->getData();
+                    $user->setEmail($protect->emailProtect($user->getEmail()));
+                    $user->setName($protect->textProtect($user->getName()));
+                    $user->setPresentation($protect->textProtect($user->getPresentation()));
 
-                if ($treatment === true) {
-                    $this->addFlash(
-                        'success',
-                        'Félicitation votre compte a été créé vous devez confirmer votre inscription en cliquant
+                    //Data processing
+                    $treatment = (new RegistrationTreatment())->treatment(
+                        $user,
+                        $data,
+                        $extensionFiles,
+                        $passwordEncoder,
+                        $mailer,
+                        $em);
+
+                    if ($treatment === true) {
+                        $this->addFlash(
+                            'success',
+                            'Félicitation votre compte a été créé vous devez confirmer votre inscription en cliquant
                         sur le lien envoyé sur votre boite mail pour pouvoir vous connectez'
-                    );
-                    return $this->redirectToRoute('app_homepage');
+                        );
+                        return $this->redirectToRoute('app_homepage');
+                    }
                 }
-                $this->addFlash(
-                    'error',
-                    'Désoler, mais la création du compte n\'a pas abouti, ceci peut être du à un compte existant
-                    ou à un problème de mot de passe, veuillez réessayer ultérieurement!!'
-                );
             }
+            $this->addFlash(
+                'error',
+                'Désoler, mais la création du compte n\'a pas abouti, ceci peut être du à un compte existant
+                    ou à un problème de mot de passe, veuillez réessayer ultérieurement!!'
+            );
         }
         return $this->render('security/register.html.twig', [
             'form' => $form->createView(),
