@@ -1,12 +1,12 @@
 //modification of the images in the browser and in the database asynchronously
 jQuery(document).ready( function () {
-    $('#btn_input_link').hide();
+    $("#btn_input_link").hide();
 
     // display the video modification button
-    jQuery('.add_the_input_movie').click(function(e) {
-        let name_of_movie = $(this).attr('name');
+    jQuery(".add_the_input_movie").click(function(e) {
+        let nameOfMovie = $(this).attr('name');
 
-        jQuery('.new_input_files').append('<div class="preview">\n' +
+        jQuery(".new_input_files").append('<div class="preview">\n' +
             '    <p class="alert alert-warning">Aucun lien envoyer pour le moment, ' +
             'attention à envoyer un lien commençant par \'http\' ou \'https\'.</p>\n' +
             '  </div><div class="form-group">' +
@@ -14,25 +14,25 @@ jQuery(document).ready( function () {
             '<input type="url" ' +
             'id="input_new_url" ' +
             'class="input_new_url form-control" ' +
-            'name="'+ name_of_movie +'"/>' +
+            'name="'+ nameOfMovie +'"/>' +
             '<button id="fileSelectMovie" class="btn btn-warning"> Valider le lien </button></div>');
         e.preventDefault();
 
         //modification to the link in the browser
-        jQuery('#fileSelectMovie').click( function () {
-            let block_input_movie = document.querySelector('.link_id_'+name_of_movie);
-            let urlSelect = document.querySelector('#input_new_url');
-            let preview = document.querySelector('.preview');
-            let block_input = document.querySelector('.new_input_files');
+        jQuery("#fileSelectMovie").click( function () {
+            let block_input_movie = document.querySelector(".link_id_"+nameOfMovie);
+            let urlSelect = document.querySelector("#input_new_url");
+            let preview = document.querySelector(".preview");
+            let blockInput = document.querySelector(".new_input_files");
 
-            manageLink(block_input_movie, urlSelect, preview, block_input);
+            manageLink(block_input_movie, urlSelect, preview, blockInput);
         });
     });
 
     //retrieving the different modified links
-    jQuery('#btn_input_link').click( function(e) {
+    jQuery("#btn_input_link").click( function(e) {
         e.preventDefault();
-        let new_link = document.querySelectorAll('.new_link');
+        let new_link = document.querySelectorAll(".new_link");
         for(let i = 0; i < new_link.length; i++) {
             linkUpload(new_link[i].name, new_link[i].src);
         }
