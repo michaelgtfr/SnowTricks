@@ -38,8 +38,7 @@ class CaptchaProtection
 
         if ($decode['success'] == true) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 }
