@@ -19,7 +19,7 @@ jQuery(document).ready(function(){
             success(content) {
                 //display of blog articles retrieved
                 let newItems = JSON.parse(content);
-                numberArticleLoad += 5;
+                numberArticleLoad += 10;
                 for (let i = 0; i < newItems.length; i++) {
                     let pathDetailArticle = "/detail/" + newItems[i].id;
                     let titleArticle = newItems[i].title;
@@ -27,12 +27,13 @@ jQuery(document).ready(function(){
                     let pathModifyArticle = "/profile/modifyArticle?id=" + newItems[i].id;
                     let pathDeleteArticle = "/deleteArticle?id=" + newItems[i].id;
                     let accountUser = "";
+
                     if (roleUser === true) {
                         // language=HTML
                         accountUser = "<a class=\"modify_item fa fa-pen-fancy\"" +
                             " href=\"" + pathModifyArticle + "\">" +
-                            "</a> " +
-                            "<a class=\"delete_item fa fa-trash-alt\" " +
+                            "</a>" +
+                            "<a class=\"delete_item fa fa-trash-alt\"" +
                             " href=\"" + pathDeleteArticle + "\">" +
                             "</a>";
                     }
