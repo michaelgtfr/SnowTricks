@@ -1,10 +1,10 @@
 //file processing images asynchronously
 jQuery(document).ready( function() {
-    $('#btn_input_img').hide();
+    $("#btn_input_img").hide();
 
     //allows the display of the image modification form
-    jQuery('.add_the_input_picture').click( function(e) {
-        let name_of_picture = $(this).attr('name');
+    jQuery(".add_the_input_picture").click( function(e) {
+        let name_of_picture = $(this).attr("name");
 
         jQuery('.new_input_files').append('<div class="preview">\n' +
             '    <p class="alert alert-warning">Aucun fichier sélectionné pour le moment,' +
@@ -18,22 +18,22 @@ jQuery(document).ready( function() {
             '<button id="fileSelect" class="btn btn-warning"> Valider le fichier </button></div>');
 
         $("input[type=file]").change(function (e) {
-            $(this).next('.custom-file-label').text(e.target.files[0].name);
-            $('.preview').hide();
+            $(this).next(".custom-file-label").text(e.target.files[0].name);
+            $(".preview").hide();
         });
         e.preventDefault();
 
         //allows the display of modified photos
-        jQuery('#fileSelect').click( function () {
-            let block_new_input = document.querySelector('.new_input_files');
-            let selected_file = document.querySelector('#input_new_file');
-            let preview = document.querySelector('.preview');
+        jQuery("#fileSelect").click( function () {
+            let block_new_input = document.querySelector(".new_input_files");
+            let selected_file = document.querySelector("#input_new_file");
+            let preview = document.querySelector(".preview");
 
-            let name_of_picture_modify = document.querySelector('.img_id_'+name_of_picture+'');
+            let name_of_picture_modify = document.querySelector(".img_id_"+name_of_picture+'');
 
             handleFiles(selected_file, preview, name_of_picture_modify, name_of_picture, block_new_input);
 
-            jQuery('#btn_input_img').show();
+            jQuery("#btn_input_img").show();
         });
     });
 
@@ -89,7 +89,7 @@ jQuery(document).ready( function() {
         }
     }
     //function allowing photos to be saved by the server
-    jQuery('#btn_input_img').click( function(e) {
+    jQuery("#btn_input_img").click( function(e) {
         e.preventDefault();
         let image_to_save = document.querySelectorAll(".obj");
         for (let i = 0; i < image_to_save.length; i++) {
