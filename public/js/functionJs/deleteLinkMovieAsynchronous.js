@@ -1,6 +1,6 @@
 //function allowing the link to be deleted to be sent to the server
 jQuery(document).ready( function() {
-    function DeleteMovie(linkDelete) {
+    function deleteMovie(linkDelete) {
         $.ajax({
             url : "/deleteMovie",
             type : "POST",
@@ -16,7 +16,7 @@ jQuery(document).ready( function() {
                 jQuery("#btn_input_link").hide();
                 setTimeout( function () {
                     messageSuccess.removeChild(messageSuccess.firstChild)
-                }, 5000);
+                }, 5000)
             },
             error : function(response, status){
                 //displays an error message
@@ -28,8 +28,8 @@ jQuery(document).ready( function() {
                 jQuery("#btn_input_link").hide();
                 setTimeout( function () {
                     messageError.removeChild(messageError.firstChild)
-                }, 5000);
-            },
+                }, 5000)
+            }
         });
     }
 
@@ -37,7 +37,7 @@ jQuery(document).ready( function() {
         e.preventDefault();
         let nameOfLink = $(this).attr("name");
         let linkDelete = document.querySelector(".link_id_" + nameOfLink);
-        new DeleteMovie(nameOfLink);
+        deleteMovie(nameOfLink);
 
         $(linkDelete).parent().remove();
     });

@@ -21,7 +21,7 @@ jQuery(document).ready( function() {
                 jQuery("#btn_input_img").hide();
                 setTimeout( function () {
                     messageSuccess.removeChild(messageSuccess.firstChild);
-                }, 5000);
+                }, 5000)
             },
             error(response, status) {
                 //displays an error message
@@ -33,7 +33,7 @@ jQuery(document).ready( function() {
                 jQuery("#btn_input_img").hide();
                 setTimeout( function () {
                     messageError.removeChild(messageError.firstChild);
-                }, 5000);
+                }, 5000)
             },
         });
     }
