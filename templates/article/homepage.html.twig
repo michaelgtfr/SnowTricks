@@ -71,10 +71,10 @@
  {% block javascripts %}
      <!--variable for js code-->
      <script>
-         let number_items = {{ numberItems }};
+         let numberItems = {{ numberItems }};
          let role_user = false;
          {% if is_granted('ROLE_USER') %}
-            role_user = true;
+            roleUser = true;
          {% endif %}
      </script>
      <!--pagination of articles via ajax-->
