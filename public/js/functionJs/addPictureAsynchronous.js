@@ -4,14 +4,14 @@ jQuery(document).ready( function() {
     //function to send it to the server
     function fileUpload(img, file) {
         $.ajax({
-            url : '/modifiedImageProcessing',
-            type : 'POST',
-            data : 'name=' + img.name +
-                '&src=' + img.src +
-                '&type=' + file['type'],
-            dataType : 'text',
+            url : "/modifiedImageProcessing",
+            type : "POST",
+            data : "name=" + img.name +
+                "&src=" + img.src +
+                "&type=" + file["type"],
+            dataType : "text",
 
-            success : function(response){
+            success(response) {
                 //display an message of success
                 let messageSuccess = document.querySelector(".new_input_files");
                 let para = document.createElement("p");
@@ -20,10 +20,10 @@ jQuery(document).ready( function() {
                 messageSuccess.appendChild(para);
                 jQuery("#btn_input_img").hide();
                 setTimeout( function () {
-                    messageSuccess.removeChild(messageSuccess.firstChild)
+                    messageSuccess.removeChild(messageSuccess.firstChild);
                 }, 5000);
             },
-            error : function(response, status){
+            error(response, status) {
                 //displays an error message
                 let messageError = document.querySelector(".new_input_files");
                 let para = document.createElement("p");
@@ -32,7 +32,7 @@ jQuery(document).ready( function() {
                 messageError.appendChild(para);
                 jQuery("#btn_input_img").hide();
                 setTimeout( function () {
-                    messageError.removeChild(messageError.firstChild)
+                    messageError.removeChild(messageError.firstChild);
                 }, 5000);
             },
         });
@@ -53,7 +53,7 @@ jQuery(document).ready( function() {
             $(".preview").show();
             let para = document.createElement("p");
             para.textContent = "Désoler votre fichier ne suis pas les critères demandés (jpg, jpeg, png, 2mo).";
-            para.setAttribute('class', "alert alert-danger");
+            para.setAttribute("class", "alert alert-danger");
             preview.appendChild(para);
         } else {
             while (nameOfPictureModify.firstChild) {
