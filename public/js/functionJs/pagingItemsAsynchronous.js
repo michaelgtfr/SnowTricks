@@ -71,6 +71,6 @@ jQuery(document).ready(function(){
                 jQuery("#title_block").append("<div class=\"alert alert-danger\"><p>" +
                     status + " : " + content + "</p></div>");
             },
-        })
+        });
     });
 });
