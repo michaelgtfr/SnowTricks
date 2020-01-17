@@ -83,7 +83,7 @@ jQuery(document).ready( function() {
                     return function(e) {
                         aImg.src = e.target.result;
                     };
-                })(img);
+                }(img));
                 reader.readAsDataURL(file);
 
             }
@@ -96,16 +96,16 @@ jQuery(document).ready( function() {
     jQuery(".add_the_input_picture").click( function(e) {
         let nameOfPicture = $(this).attr("name");
 
-        jQuery(".new_input_files").append('<div class="preview">\n' +
-            '    <p class="alert alert-warning">Aucun fichier sélectionné pour le moment,' +
-            ' attention seul les images en .jpg, .jpeg, .png et d\'une taille inférieur à 2mo sont autorisés!</p>\n' +
-            '  </div><div class="custom-file">' +
-            '<input type="file" ' +
-            'id="input_new_file" ' +
-            'class="input_new_file custom-file-input" ' +
-            'name="'+ nameOfPicture +'" accept=".jpg, .jpeg, .png" >' +
-            '<label class="custom-file-label" for="input_new_file" data-browse="Choisir">nouveau fichier</label>' +
-            '<button id="fileSelect" class="btn btn-warning"> Valider le fichier </button></div>');
+        jQuery(".new_input_files").append("<div class=\"preview\">\n" +
+            "    <p class=\"alert alert-warning\">Aucun fichier sélectionné pour le moment," +
+            " attention seul les images en .jpg, .jpeg, .png et d'une taille inférieur à 2mo sont autorisés!</p>\n" +
+            "  </div><div class=\"custom-file\">" +
+            "<input type=\"file\" " +
+            "id=\"input_new_file\" " +
+            "class=\"input_new_file custom-file-input\" " +
+            "name=\""+ nameOfPicture +"\" accept=\".jpg, .jpeg, .png\" >" +
+            "<label class=\"custom-file-label\" for=\"input_new_file\" data-browse=\"Choisir\">nouveau fichier</label>" +
+            "<button id=\"fileSelect\" class=\"btn btn-warning\"> Valider le fichier </button></div>");
 
         $("input[type=file]").change(function (e) {
             $(this).next(".custom-file-label").text(e.target.files[0].name);
