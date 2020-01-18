@@ -53,6 +53,6 @@ jQuery(document).ready( function () {
                 jQuery(".block_form_comment").append("<div class=\"alert alert-danger\"><p>" +
                     status + " : " + content + "</p></div>");
             },
-        })
+        });
     });
 });

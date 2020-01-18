@@ -7,7 +7,7 @@ jQuery(document).ready( function() {
             data : "name=" + namePicture,
             dataType : "text",
 
-            success : function(response){
+            success(response) {
                 //display an message of success
                 let messageSuccess = document.querySelector(".new_input_files");
                 let para = document.createElement("p");
@@ -19,7 +19,7 @@ jQuery(document).ready( function() {
                     messageSuccess.removeChild(messageSuccess.firstChild)
                 }, 5000)
             },
-            error : function(response, status){
+            error(response, status) {
                 //displays an error message
                 let messageError = document.querySelector(".new_input_files");
                 let para = document.createElement("p");
