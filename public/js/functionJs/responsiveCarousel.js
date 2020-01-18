@@ -16,7 +16,7 @@ jQuery(document).ready( function() {
         } else {
             //if the display is less than 540px
             let responsive = document.querySelector("#dropdownMenuButton");
-            if(responsive == null) {
+            if(responsive === null) {
                 let dropdown = document.querySelector(".dropdown");
                 dropdown.insertAdjacentHTML("afterbegin",
                     "<button class=\"btn btn-warning dropdown-toggle\" " +
