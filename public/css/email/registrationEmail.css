@@ -49,3 +49,11 @@ body
 {
     padding-top: 10px;
 }
+
+@media all and (max-width: 540px)
+{
+    .img_text
+    {
+        width: 50px;
+    }
+}
