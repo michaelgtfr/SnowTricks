@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Error page{% endblock %}
+
+{%  block body %}
+    <p class="text-center alert alert-danger">
+        Désolé mais la page demandé n'existe pas, Ceci peut être du à une page supprimé! ou à un mauvais lien.<br />
+        vous pouvez retourner à la page d'accueil
+        <a href="{{ path('app_homepage') }}">en cliquant sur ce lien .</a>
+    </p>
+{% endblock %}
