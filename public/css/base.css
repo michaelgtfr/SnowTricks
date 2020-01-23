@@ -191,3 +191,11 @@ footer span
 {
   text-decoration: underline;
 }
+
+@media all and (max-width: 540px)
+{
+  .header_sentence h1
+  {
+    font-size: 1.2em;
+  }
+}

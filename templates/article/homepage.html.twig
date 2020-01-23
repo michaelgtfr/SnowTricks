@@ -15,6 +15,9 @@
                 </div>
 
                 <!--item representation block-->
+                {% if items[0] is not defined %}
+                    <p class="col-md-12 text-center display-4">Désolé il n'y a pas d'article!</p>
+                {% endif %}
                 <div class="items row">
                     {% for item in items %}
                         <div class="blockItem card-deck col-lg-3 col-xs-12">
