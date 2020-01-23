@@ -1,5 +1,6 @@
 # SnowTricks
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/33105aae22c5429f8709a2a79be30dd3)](https://www.codacy.com/manual/michaelgtfr/SnowTricks?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=michaelgtfr/SnowTricks&amp;utm_campaign=Badge_Grade)
 SnowTricks for my project six of my study on OpenClassrooms.
 
 ## Context
