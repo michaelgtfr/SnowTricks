@@ -73,8 +73,8 @@ class RegistrationController extends AbstractController
                     if ($treatment === true) {
                         $this->addFlash(
                             'success',
-                            'Félicitation votre compte a été créé vous devez confirmer votre inscription en cliquant
-                        sur le lien envoyé sur votre boite mail pour pouvoir vous connectez'
+                            'Félicitation votre compte a été créé vous devez confirmer votre inscription en 
+                            cliquant sur le lien envoyé sur votre boite mail pour pouvoir vous connectez.'
                         );
                         return $this->redirectToRoute('app_homepage');
                     }

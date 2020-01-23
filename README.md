@@ -40,10 +40,10 @@ Go to the root folder of the site. In the root folder right click the mouse and 
 ### Site installation
 (Example with FileZilla but all FTP works on the same principle)  
 
-  Open your FTP software. Click on the logo "Gestionnaire of site". A window opens. Click on "New Site" and give it the name you want (example: "My Site"). To the right, you will have to indicate (the IP address, password and its username). Click Connect.  
+  Open your FTP software. Click on the logo "site manager". A window opens. Click on "New Site" and give it the name you want (example: "My Site"). To the right, you will have to indicate (the IP address, password and its username). Click Connect.  
   !Warning a message warns you after you click Connect you tell yourself if you are connecting or not.  
   After connecting, double-click in the left window on the files or click-Drop the folders in the right window that you want to send to the server. As soon as it appears in the right window, it was sent to your server.  
-  !Please note that your home page should be appelle index.php This is the page that will be loaded when a new visitor arrives on your site.  
+  !Please note that your home page should be call index.php This is the page that will be loaded when a new visitor arrives on your site.  
   
 ## Database installation
 
@@ -57,7 +57,7 @@ Go to the root folder of the site. In the root folder right click the mouse and 
   
 ### Access
 
-   Changed the parameter file of the database (.env). Now that it's done, your scripts have access to the host database.
+   Changed the parameter file of the database (.env.local.php). Now that it's done, your scripts have access to the host database.
    !If your table is still empty, you have to use the phpMyAdmin that the hosting puts at your disposal to recreate the tables. On your machine, go to your local phpMyAdmin. Use it to export all your tables. This will create a. sql file on your hard disk that will contain your tables. Then go to the phpMyAdmin address of your host. Once there, use the Import feature to import the. sql file that is on your hard disk. Your tables are now loaded on the host's MySQL server.  
  
  ###   website configuration
