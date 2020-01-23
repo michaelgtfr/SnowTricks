@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/article/createdArticle.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block title %}Create article{% endblock %}
+
+{%  block body %}
+    <section class="createArticle">
+        <div class="container">
+
+        <!--Article creation form-->
+            <div>
+                {{ form_start(form) }}
+
+                {{ form_row (form.title) }}
+
+                <!--image recovery section-->
+                <div class="picture_block">
+                    {{ form_label (form.files, '', {'label': 'Image (taille max: 2mo, type: jpg, jpeg, png)'} ) }}
+                    <ul id="files-fields-list" class="col-xs-12"
+                        data-prototype-files=" {{ form_widget( form.files.vars.prototype )| e }} "
+                        data-widget-files-tags=" {{ '<li></li>' | e }} "
+                        data-widget-files-counter= "0">
+                        {% for filesField in form.files %}
+                            <li class="files_class">
+                                {{ form_errors ( filesField ) }}
+                                {{ form_widget ( filesField ) }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="col-sm-12 text-center">
+                        <button type="button"
+                                class="add-another-collection-widget-files btn btn-warning"
+                                data-list-selector="#files-fields-list">Ajouter une autre photo</button>
+                        <button type="button"
+                                class="remove-another-collection-widget-files btn btn-danger"
+                                data-list-selector="#files-fields-list">Supprimer la dernière photo</button>
+                    </div>
+                </div>
+
+                <!--part concerning the recovery of video links-->
+                <div class="link_block">
+                    {{ form_label (form.movies, '', {'label': 'Lien vidéo'} ) }}
+                    <ul id="movies-fields-list"
+                        data-prototype=" {{ form_widget( form.movies.vars.prototype )| e }} "
+                        data-widget-tags=" {{ '<li></li>' | e }} "
+                        data-widget-counter="0" >
+                        {% for moviesField in form.movies %}
+                            <li class="movies_class">
+                                {{ form_errors( moviesField ) }}
+                                {{ form_widget( moviesField ) }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="col-sm-12 text-center">
+                        <button type="button"
+                                class="add-another-collection-widget btn btn-warning"
+                                data-list-selector="#movies-fields-list">Ajouter un autre lien</button>
+                        <button type="button"
+                                class="remove-another-collection-widget btn btn-danger"
+                                data-list-selector="#movies-fields-list">Supprimer le lien</button>
+                    </div>
+                </div>
+
+                {{ form_row (form.chapo) }}
+
+                {{ form_row (form.content) }}
+
+                <div class="text-center">
+                    {{ form_row (form.validate) }}
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    <!-- add and remove collection widget from the form -->
+    <script src="{{ asset('js/functionJs/collectionWidgetFile.js') }}"></script>
+    <script src="{{ asset('js/functionJs/collectionWidgetVideoLink.js') }}"></script>
+{% endblock %}

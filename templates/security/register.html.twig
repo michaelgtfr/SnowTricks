@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/security/register.css') }}" />
+    <!--js for the captcha-->
+    <script src="https://www.google.com/recaptcha/api.js"
+            async defer>
+    </script>
+{% endblock %}
+
+{% block title %}Log out!{% endblock %}
+
+{% block body %}
+    <!--form of the registration-->
+    <section class="container">
+        <div class="row">
+            <div class="subtitle col-md-12 text-center">
+                <h3>Inscription</h3>
+            </div>
+            <div class="forms col-md-12">
+                {{ form_start(form) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.name) }}
+                {{ form_row(form.password) }}
+                {{ form_row(form.passwordCheck) }}
+                {{ form_row(form.picture) }}
+                {{ form_row(form.presentation) }}
+
+                <!--captcha-->
+                <div class="g-recaptcha col-md-12" data-sitekey="6Leiuc8UAAAAAJ8Ugbs2DulrG-uzD3568muQ9OhV"></div>
+
+                <div class="text-center">
+                    {{ form_row(form.validate) }}
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block  javascripts %}
+    <script src="{{ asset('js/functionJs/operationFileForm.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+   <link href="{{ asset('css/article/homepage.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Homepage{% endblock %}
+
+{% block body %}
+    <section class="item">
+        <div class="container">
+            <div class="row">
+                <div id="title_block" class="title_block col-lg-12">
+                    <h3 class="title_page">Les articles du sites:</h3>
+                </div>
+
+                <!--item representation block-->
+                {% if items[0] is not defined %}
+                    <p class="col-md-12 text-center display-4">Désolé il n'y a pas d'article!</p>
+                {% endif %}
+                <div class="items row">
+                    {% for item in items %}
+                        <div class="blockItem card-deck col-lg-3 col-xs-12">
+                            <div class="card border-0 shadow">
+                                {% if item.name is not null %}
+                                    <img class="card-img-top img_item"
+                                         src="img/imgPost/{{ item.name }}.{{ item.extension }}"
+                                         alt="{{ item.description }}" />
+                                {%  else %}
+                                    <img class="card-img-top img_item"
+                                         src="{{ asset('img/imgPost/picture_by_default.jpg') }}"
+                                         alt="photo par défaut"/>
+                                {% endif %}
+
+                                <div class="card-body col-xs-12 text-center">
+                                    <a class="title_item col-lg-6"
+                                        href="{{ path('app_detail', {id: item.id}) }}">
+                                        {{ item.title|slice(0,8) }}
+                                    </a>
+                                    {% if is_granted('ROLE_USER') %}
+                                        <a class="modify_item fa fa-pen-fancy"
+                                           href="{{ path('app_modify', {id: item.id}) }}">
+                                        </a>
+                                        <a class="delete_item fa fa-trash-alt"
+                                           href="{{ path('app_delete_article', {id: item.id}) }}">
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <section class="more_item">
+        <div class="container">
+
+            <!--button to display more articles via ajax-->
+            <div class="block_btn_more text-center col-xs-12">
+                <button id="btn-more" class="btn btn-warning"><i class="fa fa-angle-down"></i>Afficher plus</button>
+            </div>
+
+            <!--button to go back to the top of the page if there are more than 15 articles-->
+            {% if numberItems >= 15 %}
+                <div class="block_ancre_bottom text-right">
+                    <a href="#title_block" class="ancre_bottom far fa-arrow-alt-circle-up fa-2x"></a>
+                </div>
+            {% endif %}
+
+        </div>
+    </section>
+{% endblock %}
+
+ {% block javascripts %}
+     <!--variable for js code-->
+     <script>
+         let numberItems = {{ numberItems }};
+         let roleUser = false;
+         {% if is_granted('ROLE_USER') %}
+            roleUser = true;
+         {% endif %}
+     </script>
+     <!--pagination of articles via ajax-->
+     <script src="{{ asset('js/functionJs/pagingItemsAsynchronous.js') }}"></script>
+ {% endblock %}

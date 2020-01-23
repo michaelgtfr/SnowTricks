@@ -1,0 +1,19 @@
+{%  block body %}
+    {% apply inline_css( source('@css/email/registrationEmail.css')) %}
+        <div class="block_header">
+            <p class="title_email">Bienvenue sur le site collaboratif SnowTricks,</p>
+            <img class="img_text" src="{{ email.image('@img/snow_label.png') }}" alt="etiquette du site"/>
+        </div>
+
+        <p class="content_email">Votre inscription à été accepté, avant de vous connectez,
+            vous devrez confirmée votre inscription en cliquant sur ce bouton<p>
+
+        <a class="link" href="http://localhost:8000/confirmation?activation={{ addressUser }}&cle={{ key }}">
+            confirmer en cliquant ici
+        </a>
+
+        <p class="politeness_formula">Merci de votre soutien dans cette aventure</p>
+
+        <h1 class="title_foot_email">SNOWTRICKS</h1>
+    {% endapply %}
+{% endblock %}

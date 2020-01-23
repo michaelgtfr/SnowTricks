@@ -1,0 +1,162 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/article/detailArticle.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Detail article{% endblock %}
+
+{% block body %}
+<section>
+    <div class="container_fluid">
+        <div class="block-item row">
+            <div class="product-slider container col-xs-12">
+
+                <!--carousel part-->
+                <div id="carousel" class="carousel slide col-xs-12 text-center" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="block-modify offset-lg-10 col-lg-2">
+                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                    <a class="modify_item fa fa-pen-fancy col-xs-3"
+                                       href="{{ path('app_modify', {id: item.id}) }}"></a>
+                                    <a class="delete_item fa fa-trash-alt text-right col-xs-3"
+                                       href="{{ path('app_delete_article', {id: item.id}) }}"></a>
+                            {% endif %}
+                        </div>
+                        {% if pictures is not null %}
+                            {% for picture in pictures %}
+                                <div class="carousel-item col-xs-12 item{% if loop.index == 1 %} active {% endif %}">
+                                    <img class="img-carousel col-xs-12"
+                                         src="/img/imgPost/{{ picture.name }}.{{ picture.extension }}"
+                                         alt="{{ picture.description}}" />
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="carousel-item col-xs-12 item active">
+                                <img class="img-carousel col-xs-12"
+                                     src="{{ asset('img/imgPost/picture_by_default.jpg') }}"
+                                     alt="photo par défaut" />
+                            </div>
+                        {% endif %}
+                        {% for movie in movies %}
+                            <div class="carousel-item col-xs-12 item">
+                                    <iframe width="560" height="315"
+                                            src="{{ movie.link }}" frameborder="0"
+                                            allow="accelerometer; autoplay; encrypted-media;
+                                                gyroscope; picture-in-picture"
+                                            allowfullscreen>
+                                    </iframe>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="clearfix">
+                    <div class="dropdown text-center">
+                        <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Images
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <div id="thumbcarousel" class="carousel slide" data-interval="false">
+                                <div class="carousel-inner">
+                                    <div class="item active">
+                                        {% if pictures is not null  %}
+                                            {% for picture in pictures %}
+                                                <div data-target="#carousel" data-slide-to="#" class="thumb col-xs-12">
+                                                    <img class="img-thumb"
+                                                         src="/img/imgPost/{{ picture.name }}.{{ picture.extension }}"
+                                                         alt="{{ picture.description}}"/>
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            <div data-target="#carousel" data-slide-to="#" class="thumb">
+                                                <img class="img-thumb"
+                                                     src="{{ asset('img/imgPost/picture_by_default.jpg') }}"
+                                                     alt="photo par défaut"/>
+                                            </div>
+                                        {% endif %}
+                                        {% for movie in movies %}
+                                            <div data-target="#carousel" data-slide-to="#" class="thumb thumb_video col-xs-12">
+                                                <a><i class="fab fa-youtube fa-3x"></i></a>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--content of the article-->
+            <div class="block-text container">
+                <div class="row">
+                    <div class="title col-lg-12  text-center">
+                        <h3>{{ item.title }}</h3>
+                    </div>
+                    <div class="chapo col-lg-12  text-center">
+                        <p>{{ item.chapo }}</p>
+                    </div>
+                    <div class="content col-lg-12 text-center">
+                        <p>{{ item.content }}</p>
+                    </div>
+                    <div class="date_and_author col-lg-12 text-right">
+                        <p>créer le {{ item.dateCreate|date('d/m/Y') }} par {{ item.user.name }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!--party comments-->
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <div class="block_form_comment container">
+                    {{ form(form) }}
+                </div>
+            {% endif %}
+
+            <div class="container">
+                    <div class="block-comments offset-lg-3 col-lg-6">
+                        <h3 class="text-center">Les commentaires</h3>
+                    {% for comment in comments %}
+                        <div class="block-comment col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-3 col-xs-12 text-center">
+                                    <img src="/img/imgAvatar/{{ comment.picture }}" alt="image de l'éditeur">
+                                </div>
+                                <div class="col-lg-9 col-xs-12">
+                                    <div class="author-and-date col-lg-12 text-center">
+                                        <p>auteur: {{ comment.name }} le {{ comment.dateCreate|date('d/m/Y') }}</p>
+                                    </div>
+                                    <div class="comment col-lg-12 text-center">
+                                        <p>{{ comment.comment }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="more_item">
+        <div class="container">
+            <div class="block_btn_more text-center col-xs-12">
+                <button id="btn-more" class="btn btn-warning"><i class="fa fa-angle-down"></i>Afficher plus</button>
+            </div>
+        </div>
+</section>
+{%  endblock %}
+
+{% block javascripts %}
+    <!--variable for the js part-->
+    <script>
+        let numberCommentInTheBdd = {{ numberItems }};
+        let idItem = {{ item.id }};
+    </script>
+    <!--pagination of commentaries via ajax-->
+    <script src="{{ asset('js/functionJs/pagingCommentsAsynchronous.js') }}"></script>
+    <!--part js of carousel-->
+    <script src="{{  asset('js/functionJs/carousel.js') }}"></script>
+    <!--part responsive carousel in js-->
+    <script src="{{ asset('js/functionJs/responsiveCarousel.js') }}"></script>
+{% endblock %}

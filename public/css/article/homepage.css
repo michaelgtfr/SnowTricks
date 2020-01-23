@@ -1,0 +1,39 @@
+.item
+{
+    margin-bottom: 20px;
+}
+
+.title_page
+{
+    text-align: center;
+    text-decoration: underline;
+    margin: 20px;
+}
+
+#btn-more
+{
+    margin-bottom: 20px;
+}
+
+.card-deck
+{
+    margin-bottom: 20px;
+}
+
+.modify_item
+{
+    color: white;
+    padding: 5px;
+    background-color: black;
+    box-shadow: 0 1px 1px gray;
+    border-radius: 5px;
+}
+
+.delete_item
+{
+    color: white;
+    padding: 5px;
+    background-color: #B0413E;
+    box-shadow: 0 1px 1px gray;
+    border-radius: 5px;
+}
