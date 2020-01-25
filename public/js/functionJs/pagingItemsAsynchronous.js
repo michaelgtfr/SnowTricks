@@ -19,7 +19,7 @@ jQuery(document).ready(function(){
             success(content) {
                 //display of blog articles retrieved
                 let newItems = JSON.parse(content);
-                numberArticleLoad += 10;
+                numberArticleLoad += 5;
                 for (let i = 0; i < newItems.length; i++) {
                     let pathDetailArticle = "/detail/" + newItems[i].id;
                     let titleArticle = newItems[i].title;

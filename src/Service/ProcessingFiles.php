@@ -29,7 +29,7 @@ class ProcessingFiles
         $namePhoto = "{$datePicture}-{$idUnique}.{$extensionFile}";
 
         //transfer
-        $transferFile ="img\\$folder\\$namePhoto";
+        $transferFile ="img/$folder/$namePhoto";
         move_uploaded_file($linkFile, $transferFile);
 
         return $namePhoto;

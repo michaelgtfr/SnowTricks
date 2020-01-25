@@ -22,26 +22,29 @@ class ItemRepository extends ServiceEntityRepository
         parent::__construct($registry, Item::class);
     }
 
+    /**
+     * @param $firstItem
+     * @param $numberOfItem
+     * @return mixed
+     */
     public function listOfArticle($firstItem, $numberOfItem)
     {
-      return $this->createQueryBuilder('i')
-          ->leftJoin('i.pictures','p')
-          ->addSelect('i.id')
-          ->addSelect('i.title')
-          ->addSelect('p.name')
-          ->addSelect('p.extension')
-          ->addSelect('p.description')
-          ->orderBy('i.id', 'DESC')
-          ->setFirstResult($firstItem)
-          ->setMaxResults($numberOfItem)
-          ->getQuery()
-          ->getResult()
-          ;
+         return $this->getEntityManager()->createQuery(
+             'SELECT i.id , i.title, p.name, p.extension, p.description 
+             FROM App\Entity\Item i 
+             LEFT JOIN i.pictures p 
+             GROUP BY i.id 
+             ORDER BY i.id DESC ')
+             ->setFirstResult($firstItem)
+             ->setMaxResults($numberOfItem)
+            ->getResult()
+             ;
     }
 
     /**
      * @return mixed
      * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\NoResultException
      */
     public function countArticle()
     {

@@ -68,13 +68,17 @@ class RegistrationController extends AbstractController
                         $extensionFiles,
                         $passwordEncoder,
                         $mailer,
-                        $em);
+                        $em,
+                        $request->headers->get('host')
+                    );
 
                     if ($treatment === true) {
                         $this->addFlash(
                             'success',
                             'Félicitation votre compte a été créé vous devez confirmer votre inscription en 
-                            cliquant sur le lien envoyé sur votre boite mail pour pouvoir vous connectez.'
+                            cliquant sur le lien envoyé sur votre boite mail pour pouvoir vous connectez. 
+                            Si vous n\'avez pas reçu votre email, allez sur la page de connexion, 
+                            cliquez sur le lien du mot de passe oublié et Suivez les instructions.'
                         );
                         return $this->redirectToRoute('app_homepage');
                     }

@@ -92,13 +92,13 @@
             <div class="block-text container">
                 <div class="row">
                     <div class="title col-lg-12  text-center">
-                        <h3>{{ item.title }}</h3>
+                        <h3>{{ item.title|raw }}</h3>
                     </div>
                     <div class="chapo col-lg-12  text-center">
-                        <p>{{ item.chapo }}</p>
+                        <p>{{ item.chapo|raw }}</p>
                     </div>
                     <div class="content col-lg-12 text-center">
-                        <p>{{ item.content }}</p>
+                        <p>{{ item.content|raw }}</p>
                     </div>
                     <div class="date_and_author col-lg-12 text-right">
                         <p>créer le {{ item.dateCreate|date('d/m/Y') }} par {{ item.user.name }}</p>

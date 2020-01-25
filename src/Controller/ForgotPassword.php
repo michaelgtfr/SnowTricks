@@ -48,7 +48,11 @@ class ForgotPassword extends AbstractController
 
             //send an email
             if (!empty($user)) {
-                $sendEmail = (new ForgotPasswordMailer())->forgotPasswordMailer($mailer, $user);
+                $sendEmail = (new ForgotPasswordMailer())->forgotPasswordMailer(
+                    $mailer,
+                    $user,
+                    $request->headers->get('host')
+                );
 
                 if ($sendEmail == true) {
                     $this ->addFlash( 'success' , 'Message envoyé, vous pouvez confirmer le changement 

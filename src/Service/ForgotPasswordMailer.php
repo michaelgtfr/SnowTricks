@@ -17,10 +17,11 @@ class ForgotPasswordMailer
      * Email sent to be able to change your password thanks to the link sent
      * @param MailerInterface $mailer
      * @param User $user
+     * @param $host
      * @return bool
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
      */
-    public function forgotPasswordMailer(MailerInterface $mailer,User $user)
+    public function forgotPasswordMailer(MailerInterface $mailer,User $user, $host)
     {
         $email = (new TemplatedEmail())
             ->From('michael.garret.france@gmail.com')
@@ -30,6 +31,7 @@ class ForgotPasswordMailer
             ->context([
                 'addressUser' => $user->getEmail(),
                 'key' => $user->getConfirmationKey(),
+                'host' =>$host
             ])
         ;
         $mailer->send($email);

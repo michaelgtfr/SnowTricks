@@ -31,7 +31,7 @@ class HomepagePagination extends AbstractController
 
             $items = $this->getDoctrine()
                 ->getRepository(Item::class)
-                ->listOfArticle($numberArticleLoad + 1, $numberArticleLoad + 5);
+                ->listOfArticle($numberArticleLoad, $numberArticleLoad + 5);
 
             $req =  json_encode($items);
             return new Response($req, 200);
