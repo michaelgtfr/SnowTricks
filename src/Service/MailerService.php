@@ -15,10 +15,11 @@ class MailerService
      * @param MailerInterface $mailer
      * @param $addressUser
      * @param $key
+     * @param $host
      * @return bool
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
      */
-    public function mailer(MailerInterface $mailer, $addressUser, $key)
+    public function mailer(MailerInterface $mailer, $addressUser, $key, $host)
     {
         $email = (new TemplatedEmail())
             ->From('michael.garret.france@gmail.com')
@@ -27,7 +28,8 @@ class MailerService
             ->htmlTemplate('emails/registrationEmail.html.twig')
             ->context([
                 'addressUser' => $addressUser,
-                'key' => $key
+                'key' => $key,
+                'host' => $host
             ])
             ;
         $mailer->send($email);

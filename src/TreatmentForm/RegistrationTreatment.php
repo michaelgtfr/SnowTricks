@@ -24,13 +24,13 @@ class RegistrationTreatment
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param MailerInterface $mailer
      * @param EntityManagerInterface $em
+     * @param $host
      * @return bool
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
-     * @throws \Exception
      */
     public function treatment(User $user,$data, $extensionFiles,
                               UserPasswordEncoderInterface $passwordEncoder, MailerInterface $mailer,
-                              EntityManagerInterface $em)
+                              EntityManagerInterface $em, $host)
     {
         /**
          * @var User $data
@@ -56,7 +56,7 @@ class RegistrationTreatment
         $em->persist($user);
         $em->flush();
 
-        $emailConfirmation = ( new MailerService())->mailer($mailer, $data->getEmail(), $key);
+        $emailConfirmation = ( new MailerService())->mailer($mailer, $data->getEmail(), $key, $host);
 
         if ($emailConfirmation === true) {
             return true;

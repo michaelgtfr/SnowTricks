@@ -26,7 +26,6 @@ class DetailArticleController extends AbstractController
      * @param Security $security
      * @param SecurityBreachProtection $protect
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Exception
      */
     public function detailArticle(Request $request, EntityManagerInterface $em,

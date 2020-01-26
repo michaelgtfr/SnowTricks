@@ -37,3 +37,8 @@
     box-shadow: 0 1px 1px gray;
     border-radius: 5px;
 }
+
+.card
+{
+    min-width: 210px;
+}
