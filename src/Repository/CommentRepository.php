@@ -44,6 +44,7 @@ class CommentRepository extends ServiceEntityRepository
      * @param $id
      * @return mixed
      * @throws NonUniqueResultException
+     * @throws \Doctrine\ORM\NoResultException
      */
     public function countCommentArticle($id)
     {
