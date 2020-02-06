@@ -31,6 +31,7 @@ class CommentRepository extends ServiceEntityRepository
             ->leftJoin('c.author', 'u')
             ->addSelect('c.dateCreate')
             ->addSelect('c.comment')
+            ->addSelect('u.email')
             ->addSelect('u.name')
             ->addSelect('u.picture')
             ->setMaxResults(10)

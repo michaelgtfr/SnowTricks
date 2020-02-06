@@ -21,7 +21,7 @@ class CommentForm extends AbstractType
     {
         $builder
             ->add('comment', TextareaType::class, [
-                'label' => 'Commentaire'
+                'label' => 'Commentaire',
             ])
             -> add ( 'validate' , SubmitType::class, [
                 'label' => 'Valider'

@@ -6,11 +6,27 @@
     font-style: normal;
 }
 
+/* block header */
+
+.header_sentence
+{
+    display: none;
+}
+
+/* block section */
+
+
 /* block carousel */
 
 .block-item
 {
-    display: block;
+    box-shadow: 0 0 1px #565656;
+    background-color: #e0e0e0;
+    position: relative;
+    top: -450px;
+    margin-bottom: -230px;
+    border-radius: 10px;
+    padding-bottom: 10px;
 }
 
 .modify_item, .delete_item
@@ -29,10 +45,7 @@
 
 .product-slider
 {
-    background-color: #dfdfdf;
-    box-shadow: 1px 1px 12px #dfdfdf;
     padding-top: 20px;
-    margin-top: -250px;
 }
 
 .img-carousel
@@ -140,9 +153,10 @@
 
 .block-comment, .block_form_comment
 {
-    margin-bottom: 10px;
+    margin: 10px;
     background-color: #f6f6f6;
     border: 1px solid #e3e3e3;
+    border-radius: 5px;
 }
 
 .block-comment img
@@ -155,6 +169,13 @@
 .author-and-date
 {
     font-weight: bold;
+}
+
+.email_comment
+{
+    font-style: italic;
+    font-weight: bold;
+    font-size: 0.6em;
 }
 
 @media all and (max-width: 540px)

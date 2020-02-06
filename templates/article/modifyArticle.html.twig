@@ -9,151 +9,163 @@
 {% block body %}
     <!--image and video, if the screen is 540px less it goes on a drop-down list-->
     <section class="container">
-        <div class="dropdown text-center">
-            <button id="dropdownMenuButton" class="btn btn-warning dropdown-toggle" type="button"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Images
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <div class="row picturesAndMovies justify-content-md-center">
-                    {% for picture in pictures %}
-                        <div class="block_of_the_pictures col-md-3 col-xs-12">
-                            <div class="img_id_{{ picture.id }}">
-                                <img class="col-sm-12" name="{{ picture.id }}"
-                                     src="/img/imgPost/{{ picture.name }}.{{ picture.extension }}"
-                                     alt="{{ picture.description }}"/>
-                            </div>
-                            <div class="btn_asynchronous_modify text-center col-md-12">
-                                <div class="block_btn_asynchronous row">
-                                    <a class="add_the_input_picture col-md-6 fa fa-pen-fancy"
-                                       name="{{ picture.id }}" href="#"></a>
-                                    <a class="delete_the_picture col-md-6 fa fa-trash-alt"
-                                       name="{{ picture.id }}" href="#"></a>
+        <div class="block_item_modify">
+            <div class="dropdown text-center">
+                <button id="dropdownMenuButton" class="btn btn-warning dropdown-toggle" type="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Images
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <div class="row picturesAndMovies justify-content-md-center">
+                        {% for picture in pictures %}
+                            <div class="block_of_the_pictures col-md-3 col-xs-12">
+                                <div class="img_id_{{ picture.id }}">
+                                    <img class="col-sm-12" name="{{ picture.id }}"
+                                         src="/img/imgPost/{{ picture.name }}.{{ picture.extension }}"
+                                         alt="{{ picture.description }}"/>
+                                </div>
+                                <div class="btn_asynchronous_modify text-center col-md-12">
+                                    <div class="block_btn_asynchronous row">
+                                        <a class="add_the_input_picture col-md-6 fa fa-pen-fancy"
+                                           name="{{ picture.id }}" href="#"></a>
+                                        <a class="delete_the_picture col-md-6 fa fa-trash-alt"
+                                           name="{{ picture.id }}" href="#"></a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    {%  endfor %}
-                    {% for movie in movies %}
-                        <div class="block_of_the_movies col-md-3 col-xs-12">
-                            <div class="link_id_{{ movie.id }} text-center">
-                                <iframe name="{{ movie.id }}"
-                                        src="{{ movie.link }}"
-                                        frameborder="0" width="100%"
-                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                        allowfullscreen>
+                        {%  endfor %}
+                        {% for movie in movies %}
+                            <div class="block_of_the_movies col-md-3 col-xs-12">
+                                <div class="link_id_{{ movie.id }} text-center">
+                                    <iframe name="{{ movie.id }}"
+                                            src="{{ movie.link }}"
+                                            frameborder="0" width="100%"
+                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                            allowfullscreen>
 
-                                </iframe>
-                            </div>
-                            <div class="btn_asynchronous_modify text-center col-md-12">
-                                <div class="block_btn_asynchronous row">
-                                    <a class="add_the_input_movie col-md-6 fa fa-pen-fancy"
-                                       name="{{ movie.id }}" href="#"></a>
-                                    <a class="delete_the_link col-md-6 fa fa-trash-alt"
-                                       name="{{ movie.id }}" href="#"></a>
+                                    </iframe>
+                                </div>
+                                <div class="btn_asynchronous_modify text-center col-md-12">
+                                    <div class="block_btn_asynchronous row">
+                                        <a class="add_the_input_movie col-md-6 fa fa-pen-fancy"
+                                           name="{{ movie.id }}" href="#"></a>
+                                        <a class="delete_the_link col-md-6 fa fa-trash-alt"
+                                           name="{{ movie.id }}" href="#"></a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="new_input_files col-md-12"></div>
-        <div class="block_input_img text-center">
-            <button id="btn_input_img" class="btn btn-primary">Valider les images modifiés</button>
-            <button id="btn_input_link" class="btn btn-primary">Valider les liens modifiés</button>
-        </div>
+            <div class="new_input_files col-md-12"></div>
+            <div class="block_input_img text-center">
+                <button id="btn_input_img" class="btn btn-primary">Valider les images modifiés</button>
+                <button id="btn_input_link" class="btn btn-primary">Valider les liens modifiés</button>
+            </div>
 
-        <!--adding new photos and new links -->
-        {{ form_start(form) }}
-        <div class="pictureBlock col-xs-12">
-            {{ form_label (form.files, '', {'label': 'Image (taille max: 2mo, type: jpg, jpeg, png)'} ) }}
-            <ul id="files-fields-list" class="col-xs-12"
-                data-prototype-files=" {{ form_widget( form.files.vars.prototype )| e }} "
-                data-widget-files-tags=" {{ '<li></li>' | e }} "
-                data-widget-files-counter= "0">
-                {% for filesField in form.files %}
-                    <li class="files_class">
-                        {{ form_errors ( filesField ) }}
-                        {{ form_widget ( filesField ) }}
+            <!--adding new photos and new links -->
+            {{ form_start(form) }}
+            <div class="pictureBlock col-xs-12">
+                {{ form_label (form.files, '', {'label': 'Image (taille max: 2mo, type: jpg, jpeg, png)'} ) }}
+                <ul id="files-fields-list" class="col-xs-12"
+                    data-prototype-files=" {{ form_widget( form.files.vars.prototype )| e }} "
+                    data-widget-files-tags=" {{ '<li></li>' | e }} "
+                    data-widget-files-counter= "0">
+                    {% for filesField in form.files %}
+                        <li class="files_class">
+                            {{ form_errors ( filesField ) }}
+                            {{ form_widget ( filesField ) }}
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div class="text-center">
+                    <button type="button"
+                            class="add-another-collection-widget-files btn btn-warning"
+                            data-list-selector="#files-fields-list">Ajouter une autre photo</button>
+                    <button type="button"
+                            class="remove-another-collection-widget-files btn btn-danger"
+                            data-list-selector="#files-fields-list">Supprimer la dernière photo</button>
+                </div>
+            </div>
+
+            {{ form_label (form.movies, '', {'label': 'Lien vidéo'} ) }}
+            <ul id="movies-fields-list"
+                data-prototype=" {{ form_widget( form.movies.vars.prototype )| e }} "
+                data-widget-tags=" {{ '<li></li>' | e }} "
+                data-widget-counter="0" >
+                {% for moviesField in form.movies %}
+                    <li class="movies_class">
+                        {{ form_errors( moviesField ) }}
+                        {{ form_widget( moviesField ) }}
                     </li>
                 {% endfor %}
             </ul>
             <div class="text-center">
                 <button type="button"
-                        class="add-another-collection-widget-files btn btn-warning"
-                        data-list-selector="#files-fields-list">Ajouter une autre photo</button>
+                        class="add-another-collection-widget btn btn-warning"
+                        data-list-selector="#movies-fields-list">Ajouter un autre lien</button>
                 <button type="button"
-                        class="remove-another-collection-widget-files btn btn-danger"
-                        data-list-selector="#files-fields-list">Supprimer la dernière photo</button>
+                        class="remove-another-collection-widget btn btn-danger"
+                        data-list-selector="#movies-fields-list">Supprimer le lien</button>
             </div>
-        </div>
 
-        {{ form_label (form.movies, '', {'label': 'Lien vidéo'} ) }}
-        <ul id="movies-fields-list"
-            data-prototype=" {{ form_widget( form.movies.vars.prototype )| e }} "
-            data-widget-tags=" {{ '<li></li>' | e }} "
-            data-widget-counter="0" >
-            {% for moviesField in form.movies %}
-                <li class="movies_class">
-                    {{ form_errors( moviesField ) }}
-                    {{ form_widget( moviesField ) }}
-                </li>
-            {% endfor %}
-        </ul>
-        <div class="text-center">
-            <button type="button"
-                    class="add-another-collection-widget btn btn-warning"
-                    data-list-selector="#movies-fields-list">Ajouter un autre lien</button>
-            <button type="button"
-                    class="remove-another-collection-widget btn btn-danger"
-                    data-list-selector="#movies-fields-list">Supprimer le lien</button>
-        </div>
+            <!--rest of form-->
+            <div class="block_title">
+                {{ form_row(form.title) }}
+                <p class="log_modify_article_form_title"></p>
+            </div>
 
-        <!--rest of form-->
-        {{ form_row(form.title) }}
-        {{ form_row(form.chapo) }}
-        {{ form_row(form.content) }}
+            <div class="block_chapo">
+                {{ form_row(form.chapo) }}
+                <p class="log_modify_article_form_chapo"></p>
+            </div>
 
-        <!--button validate and deleted-->
-        <div class="block_modify_article">
-            <div class="btn_validate col-lg-12">
-                <div class="row">
-                    <div class="col-lg-6 text-center">
-                        {{ form_row(form.validate) }}
+            <div class="block_content">
+                {{ form_row(form.content) }}
+            </div>
+
+            <!--button validate and deleted-->
+            <div class="block_modify_article">
+                <div class="btn_validate col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-6 text-center">
+                            {{ form_row(form.validate) }}
+                        </div>
+                        <div class="col-lg-6 text-center">
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+                                Supprimer l'article
+                            </button>
+                        </div>
                     </div>
-                    <div class="col-lg-6 text-center">
-                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
-                            Supprimer l'article
-                        </button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+
+            <!--Modal-->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Suppression de l'article</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            être vous sur de vouloir supprimer l'article ?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-warning" data-dismiss="modal">Fermer</button>
+                            <a href="{{ path('app_delete_article', {id: idItem}) }}">
+                                <button type="button" class="btn btn-danger" >Supprimer</button>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-            {{ form_end(form) }}
         </div>
-
-    <!--Modal-->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-         aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Suppression de l'article</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            être vous sur de vouloir supprimer l'article ?
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-warning" data-dismiss="modal">Fermer</button>
-            <a href="{{ path('app_delete_article', {id: idItem}) }}">
-                <button type="button" class="btn btn-danger" >Supprimer</button>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
     </section>
 {% endblock %}
 
@@ -163,12 +175,16 @@
     <script src="{{ asset('js/functionJs/collectionWidgetVideoLink.js') }}"></script>
     <!-- delete the link movie via ajax -->
     <script src="{{ asset('js/functionJs/deleteLinkMovieAsynchronous.js') }}"></script>
-    <!-- delete the picture via ajax-->
+    <!-- delete the picture via ajax -->
     <script src="{{ asset('js/functionJs/deletePictureAsynchronous.js') }}"></script>
-    <!-- modified picture via jquery and ajax-->
+    <!-- modified picture via jquery and ajax -->
     <script src="{{ asset('js/functionJs/addPictureAsynchronous.js') }}"></script>
-    <!-- modified video via jquery and ajax-->
+    <!-- modified video via jquery and ajax -->
     <script src="{{ asset('js/functionJs/addVideoAsynchronous.js') }}"></script>
-    <!-- part responsive in the picture in js-->
-    <script src="{{ asset('js/functionJs/responsiveCarousel.js') }}"></script>-->
+    <!-- part responsive in the picture in js -->
+    <script src="{{ asset('js/functionJs/responsiveCarousel.js') }}"></script>
+    <!-- allows to display the number of characters authorized for an input field -->
+    <script src="{{ asset('js/functionJs/flangerForInputModify.js') }}"></script>
+    <!-- code js exclusive to this page -->
+    <script src="{{ asset('js/functionJs/modifyArticle.js') }}"></script>
 {% endblock %}

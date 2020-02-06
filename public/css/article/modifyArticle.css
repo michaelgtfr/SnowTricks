@@ -1,9 +1,31 @@
+/* block header */
+.header_sentence
+{
+    display: none;
+}
+
+/*block section*/
+
+
+.block_item_modify
+{
+    box-shadow: 0 0 1px #565656;
+    background-color: #e0e0e0;
+    position: relative;
+    top: -450px;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: -230px;
+}
+
 /* part pictures and movies */
 .picturesAndMovies
 {
     padding-top: 20px;
     padding-bottom: 50px;
     background-color: #eeeeee;
+    margin: initial;
+    border-radius: 5px;
 }
 
 .block_btn_asynchronous
@@ -41,7 +63,7 @@
 
 #fileSelect, #fileSelectMovie
 {
-    margin-top: 5px;
+    margin-top: 10px;
     margin-bottom: 30px;
 }
 
@@ -57,6 +79,7 @@
 label, legend
 {
     font-weight: bold;
+    font-size: 1.2em;
 }
 
 @media all and (max-width: 540px)
