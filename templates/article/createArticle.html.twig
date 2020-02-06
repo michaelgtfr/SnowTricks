@@ -14,7 +14,10 @@
             <div>
                 {{ form_start(form) }}
 
-                {{ form_row (form.title) }}
+                <div class="block_title_form">
+                    {{ form_row (form.title) }}
+                    <p class="log_create_article_form_title"></p>
+                </div>
 
                 <!--image recovery section-->
                 <div class="picture_block">
@@ -64,7 +67,10 @@
                     </div>
                 </div>
 
-                {{ form_row (form.chapo) }}
+                <div class="block_chapo">
+                    {{ form_row (form.chapo) }}
+                    <p class="log_create_article_form_chapo"></p>
+                </div>
 
                 {{ form_row (form.content) }}
 
@@ -82,4 +88,6 @@
     <!-- add and remove collection widget from the form -->
     <script src="{{ asset('js/functionJs/collectionWidgetFile.js') }}"></script>
     <script src="{{ asset('js/functionJs/collectionWidgetVideoLink.js') }}"></script>
+    <!--allows to display the number of characters authorized for an input field-->
+    <script src="{{ asset('js/functionJs/flangeForInput.js') }}"></script>
 {% endblock %}

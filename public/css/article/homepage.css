@@ -42,3 +42,17 @@
 {
     min-width: 210px;
 }
+
+.img_item
+{
+    object-fit: cover;
+    height: 150px;
+}
+
+@media all and (max-width: 540px)
+{
+    .img_item
+    {
+        height: 100%;
+    }
+}

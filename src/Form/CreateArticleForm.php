@@ -27,7 +27,10 @@ class CreateArticleForm extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'label' => 'Titre'
+                'label' => 'Titre',
+                'attr' => [
+                    'maxLength' => 8,
+                ]
             ])
             ->add('files', CollectionType::class, [
                 'entry_type' => FileType::class,
@@ -53,7 +56,11 @@ class CreateArticleForm extends AbstractType
                 'prototype' => true,
                 'label' => false,
             ])
-            ->add('chapo', TextType::class)
+            ->add('chapo', TextType::class, [
+                'attr' => [
+                    'maxLength' => 255,
+                ]
+            ])
             ->add('content', TextareaType::class, [
                 'label' => 'Contenu'
             ])

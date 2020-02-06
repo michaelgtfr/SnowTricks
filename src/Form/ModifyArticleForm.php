@@ -27,7 +27,10 @@ class ModifyArticleForm extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'label' => 'titre'
+                'label' => 'Titre',
+                'attr' => [
+                    'maxLength' => 8,
+                ],
             ])
             ->add('files', CollectionType::class, [
                 'entry_type' => FileType::class,
@@ -53,9 +56,13 @@ class ModifyArticleForm extends AbstractType
                 'allow_delete' => true,
                 'prototype' => true
             ])
-            ->add('chapo', TextType::class)
+            ->add('chapo', TextType::class, [
+                'attr' => [
+                    'maxLength' => 255,
+                ],
+            ])
             ->add('content', TextareaType::class, [
-                'label' => 'Contenu'
+                'label' => 'Contenu',
             ])
             ->add('validate', SubmitType::class, [
                 'label' => 'Valider la modification'

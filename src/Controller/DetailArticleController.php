@@ -43,12 +43,14 @@ class DetailArticleController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+
             // data processing
             $treatment = (new CommentDetailArticleTreatment())
                 ->treatment($item, $form, $security, $em);
 
             if ($treatment == true) {
                 $this ->addFlash( 'success' , 'votre commentaire à été enregistré !');
+                return $this->redirectToRoute('app_detail', ['id' => $id]);
             } else {
                 $this ->addFlash(
                     'error' ,
@@ -56,7 +58,6 @@ class DetailArticleController extends AbstractController
                 );
             }
         }
-
         $pictures = $item->getPictures();
         if(!$pictures[0]) {
             $pictures = null;

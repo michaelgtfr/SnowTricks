@@ -8,19 +8,19 @@
 
 {% block body %}
 <section>
-    <div class="container_fluid">
+    <div class="block_detail_article container">
         <div class="block-item row">
             <div class="product-slider container col-xs-12">
 
                 <!--carousel part-->
                 <div id="carousel" class="carousel slide col-xs-12 text-center" data-ride="carousel">
                     <div class="carousel-inner">
-                        <div class="block-modify offset-lg-10 col-lg-2">
+                        <div class="block-modify text-right">
                             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                                    <a class="modify_item fa fa-pen-fancy col-xs-3"
-                                       href="{{ path('app_modify', {id: item.id}) }}"></a>
-                                    <a class="delete_item fa fa-trash-alt text-right col-xs-3"
-                                       href="{{ path('app_delete_article', {id: item.id}) }}"></a>
+                                <a class="modify_item fa fa-pen-fancy col-xs-3"
+                                   href="{{ path('app_modify', {id: item.id}) }}"></a>
+                                <a class="delete_item fa fa-trash-alt text-right col-xs-3"
+                                   href="{{ path('app_delete_article', {id: item.id}) }}"></a>
                             {% endif %}
                         </div>
                         {% if pictures is not null %}
@@ -40,12 +40,12 @@
                         {% endif %}
                         {% for movie in movies %}
                             <div class="carousel-item col-xs-12 item">
-                                    <iframe width="560" height="315"
-                                            src="{{ movie.link }}" frameborder="0"
-                                            allow="accelerometer; autoplay; encrypted-media;
+                                <iframe width="560" height="315"
+                                        src="{{ movie.link }}" frameborder="0"
+                                        allow="accelerometer; autoplay; encrypted-media;
                                                 gyroscope; picture-in-picture"
-                                            allowfullscreen>
-                                    </iframe>
+                                        allowfullscreen>
+                                </iframe>
                             </div>
                         {% endfor %}
                     </div>
@@ -114,8 +114,8 @@
             {% endif %}
 
             <div class="container">
-                    <div class="block-comments offset-lg-3 col-lg-6">
-                        <h3 class="text-center">Les commentaires</h3>
+                <div class="block-comments offset-lg-3 col-lg-6">
+                    <h3 class="text-center">Les commentaires</h3>
                     {% for comment in comments %}
                         <div class="block-comment col-lg-12">
                             <div class="row">
@@ -129,21 +129,22 @@
                                     <div class="comment col-lg-12 text-center">
                                         <p>{{ comment.comment }}</p>
                                     </div>
+                                    <div class="email_comment col-lg-12 text-right">
+                                        <p>{{ comment.email }}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     {% endfor %}
                 </div>
             </div>
-        </div>
-    </div>
-</section>
-<section class="more_item">
-        <div class="container">
-            <div class="block_btn_more text-center col-xs-12">
-                <button id="btn-more" class="btn btn-warning"><i class="fa fa-angle-down"></i>Afficher plus</button>
+            <div class="more_item container">
+                <div class="block_btn_more text-center col-xs-12">
+                    <button id="btn-more" class="btn btn-warning"><i class="fa fa-angle-down"></i>Afficher plus</button>
+                </div>
             </div>
         </div>
+    </div>
 </section>
 {%  endblock %}
 
