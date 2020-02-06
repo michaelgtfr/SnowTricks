@@ -1,4 +1,11 @@
+/* block header */
+.header_sentence
+{
+    display: none;
+}
+
 /*block section*/
+
 
 .block_item_modify
 {
@@ -56,7 +63,7 @@
 
 #fileSelect, #fileSelectMovie
 {
-    margin-top: 5px;
+    margin-top: 10px;
     margin-bottom: 30px;
 }
 
