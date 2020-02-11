@@ -1,9 +1,16 @@
+/* body */
+body
+{
+    height: auto;
+}
+
+/* section */
 .block-form
 {
-    background-color: #ededed;
-    box-shadow: 0 1px 0 #e2e2e2 ;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    box-shadow: 0 0 1px #565656;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    margin-bottom: 50px;
     padding: 10px;
 }
 
@@ -20,4 +27,12 @@
 .register a, .forgot_password a
 {
     color: orange;
+}
+
+@media all and (max-width: 540px)
+{
+    .block-form
+    {
+        margin: 10px;
+    }
 }

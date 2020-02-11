@@ -62,7 +62,10 @@ class CreateArticleForm extends AbstractType
                 ]
             ])
             ->add('content', TextareaType::class, [
-                'label' => 'Contenu'
+                'label' => 'Contenu',
+                'attr' => [
+                    'rows' => 5,
+                ]
             ])
             -> add ( 'validate' , SubmitType::class, [
             'label' => 'Valider'

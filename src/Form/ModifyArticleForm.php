@@ -63,6 +63,9 @@ class ModifyArticleForm extends AbstractType
             ])
             ->add('content', TextareaType::class, [
                 'label' => 'Contenu',
+                'attr' => [
+                    'rows' => 5,
+                ]
             ])
             ->add('validate', SubmitType::class, [
                 'label' => 'Valider la modification'
