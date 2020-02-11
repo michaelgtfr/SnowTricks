@@ -81,7 +81,7 @@
 
 body {
     width: 100%;
-    height: 1100px;
+    height: 1300px;
     min-height: 35rem;
     background: linear-gradient(to bottom, rgba(22, 22, 22, 0.3) 0%, rgba(22, 22, 22, 0.7) 75%, #161616 100%), url("../img/header_snowboardeur.jpg");
     background-position: center;

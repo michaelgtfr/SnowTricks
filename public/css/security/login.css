@@ -3,14 +3,14 @@ body
 {
     height: auto;
 }
-
 /* section */
 .block-form
 {
     box-shadow: 0 0 1px #565656;
     background-color: #e0e0e0;
     border-radius: 10px;
-    margin-bottom: 50px;
+    margin-top: 100px;
+    margin-bottom: 100px;
     padding: 10px;
 }
 

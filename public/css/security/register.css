@@ -1,4 +1,15 @@
 /* section */
+body
+{
+    height: 100%;
+}
+
+/* section */
+section
+{
+    min-height: inherit;
+}
+
 .block_register
 {
     box-shadow: 0 0 1px #565656;

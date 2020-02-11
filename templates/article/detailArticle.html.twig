@@ -124,9 +124,9 @@
                                 </div>
                                 <div class="col-lg-9 col-xs-12">
                                     <div class="author-and-date col-lg-12 text-center">
-                                        <a href="mailto:{{ comment.email }}">
-                                            <p>auteur: {{ comment.name }} le {{ comment.dateCreate|date('d/m/Y') }}</p>
-                                        </a>
+                                        <p>auteur:
+                                            <a href="mailto:{{ comment.email }}">{{ comment.name }}</a>
+                                        le {{ comment.dateCreate|date('d/m/Y') }}</p>
                                     </div>
                                     <div class="comment col-lg-12">
                                         <p>{{ comment.comment }}</p>
