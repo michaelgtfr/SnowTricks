@@ -1,3 +1,25 @@
+/* body */
+body
+{
+    height: 1000px;
+}
+/* section */
+.block-item
+{
+    box-shadow: 0 0 1px #565656;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    margin-bottom: 50px;
+    padding: 10px;
+}
+
+.title_of_page
+{
+    font-weight: bold;
+    font-size: 1.2em;
+    text-decoration: underline;
+}
+
 label, legend
 {
     font-weight: bold;

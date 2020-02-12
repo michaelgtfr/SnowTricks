@@ -1,21 +1,11 @@
-/* block header */
-.header_sentence
-{
-    display: none;
-}
-
 /*block section*/
-
-
 .block_item_modify
 {
     box-shadow: 0 0 1px #565656;
     background-color: #e0e0e0;
-    position: relative;
-    top: -450px;
     border-radius: 10px;
+    margin-bottom: 50px;
     padding: 10px;
-    margin-bottom: -230px;
 }
 
 /* part pictures and movies */

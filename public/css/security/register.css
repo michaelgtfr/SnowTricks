@@ -1,4 +1,25 @@
-.subtitle
+/* section */
+body
+{
+    height: 100%;
+}
+
+/* section */
+section
+{
+    min-height: inherit;
+}
+
+.block_register
+{
+    box-shadow: 0 0 1px #565656;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    margin-bottom: 50px;
+    padding: 10px;
+}
+
+.subtitle h3
 {
     font-weight: bold;
     text-decoration: underline;

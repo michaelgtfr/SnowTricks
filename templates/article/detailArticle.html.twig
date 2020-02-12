@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'baseTwo.html.twig' %}
 
 {% block stylesheets %}
     <link href="{{ asset('css/article/detailArticle.css') }}" rel="stylesheet">
@@ -124,13 +124,12 @@
                                 </div>
                                 <div class="col-lg-9 col-xs-12">
                                     <div class="author-and-date col-lg-12 text-center">
-                                        <p>auteur: {{ comment.name }} le {{ comment.dateCreate|date('d/m/Y') }}</p>
+                                        <p>auteur:
+                                            <a href="mailto:{{ comment.email }}">{{ comment.name }}</a>
+                                        le {{ comment.dateCreate|date('d/m/Y') }}</p>
                                     </div>
-                                    <div class="comment col-lg-12 text-center">
+                                    <div class="comment col-lg-12">
                                         <p>{{ comment.comment }}</p>
-                                    </div>
-                                    <div class="email_comment col-lg-12 text-right">
-                                        <p>{{ comment.email }}</p>
                                     </div>
                                 </div>
                             </div>

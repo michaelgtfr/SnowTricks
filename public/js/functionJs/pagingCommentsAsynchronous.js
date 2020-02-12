@@ -32,11 +32,13 @@ jQuery(document).ready( function () {
                                     "<img src=\"/img/imgAvatar/"+ newComment[i].picture +"\" " +
                                     "alt=\"image de l'éditeur\">" +
                                 "</div>"+
-                                "<div class=\"col-lg-9\">"+
+                                "<div class=\"col-lg-9 col-xs-12\">"+
                                     "<div class=\"author-and-date col-lg-12 text-center\">" +
-                                        "<p>auteur: "+ newComment[i].name +" le "+ date + "</p>\n" +
+                                        "<p>auteur: "+
+                                            "<a href=\"mailto:"+ newComment[i].email +"\">"+ newComment[i].name +"</a>"+
+                                            " le "+ date + "</p>\n" +
                                     "</div>"+
-                                    "<div class=\"comment col-lg-12 text-center\">" +
+                                    "<div class=\"comment col-lg-12\">" +
                                         "<p>" + newComment[i].comment + "</p>\n" +
                                     "</div>" +
                                 "</div>" +

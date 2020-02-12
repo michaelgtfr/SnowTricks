@@ -51,6 +51,12 @@
 
 @media all and (max-width: 540px)
 {
+    .items
+    {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
     .img_item
     {
         height: 100%;
