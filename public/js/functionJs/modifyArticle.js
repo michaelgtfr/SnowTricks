@@ -4,9 +4,9 @@ jQuery(document).ready( function () {
         '&#39;' : "'",
     };
 
-    let contentItem = document.querySelector('#modify_article_form_content');
-    let contentChapo = document.querySelector('#modify_article_form_chapo');
-    let contentTitle = document.querySelector('#modify_article_form_title');
+    let contentItem = document.querySelector("#modify_article_form_content");
+    let contentChapo = document.querySelector("#modify_article_form_chapo");
+    let contentTitle = document.querySelector("#modify_article_form_title");
 
     for (let escape in variableOfTableau) {
         let newEscape = new RegExp(escape, "g");
