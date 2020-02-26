@@ -78,6 +78,8 @@ class User implements UserInterface
      */
     private $confirmationKey;
 
+    private $passwordCheck;
+
     public function __construct()
     {
         $this->items = new ArrayCollection();
@@ -286,6 +288,18 @@ class User implements UserInterface
     public function setConfirmationKey(string $confirmationKey): self
     {
         $this->confirmationKey = $confirmationKey;
+
+        return $this;
+    }
+
+    public function getPasswordCheck(): ?string
+    {
+        return $this->passwordCheck;
+    }
+
+    public function setPasswordCheck(string $passwordCheck): self
+    {
+        $this->passwordCheck = $passwordCheck;
 
         return $this;
     }

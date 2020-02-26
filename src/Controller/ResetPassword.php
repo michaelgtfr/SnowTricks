@@ -47,8 +47,8 @@ class ResetPassword extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 //Check data
-                $passwordOne = $protect->textProtect($form->get('passwordOne')->getData());
-                $passwordTwo = $protect->textProtect($form->get('passwordTwo')->getData());
+                $passwordOne = $protect->textProtect($form->get('password')->getData());
+                $passwordTwo = $protect->textProtect($form->get('passwordCheck')->getData());
                 $emailForm =  $protect->emailProtect($form->get('email')->getData());
 
                 if ($passwordOne === $passwordTwo && $emailForm == $user->getEmail()) {

@@ -50,13 +50,12 @@ class RegistrationController extends AbstractController
 
             if ($captcha === true) {
                 //Check the password
-                $passwordOne = $protect->textProtect($form->get('password')->getData());
-                $passwordTwo = $protect->textProtect($form->get('passwordCheck')->getData());
+                $passwordOne = $protect->textProtect($user->getPassword());
+                $passwordTwo = $protect->textProtect($user->getPasswordCheck());
 
                 if(!empty($passwordOne) == !empty($passwordTwo)) {
                     //Check the data
                     $extensionFiles = $protect->textProtect($form->get('picture')->getData()->guessExtension());
-                    $data = $form->getData();
                     $user->setEmail($protect->emailProtect($user->getEmail()));
                     $user->setName($protect->textProtect($user->getName()));
                     $user->setPresentation($protect->textProtect($user->getPresentation()));
@@ -64,7 +63,6 @@ class RegistrationController extends AbstractController
                     //Data processing
                     $treatment = (new RegistrationTreatment())->treatment(
                         $user,
-                        $data,
                         $extensionFiles,
                         $passwordEncoder,
                         $mailer,

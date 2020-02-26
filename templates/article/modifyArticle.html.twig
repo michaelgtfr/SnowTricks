@@ -16,7 +16,7 @@
                     Images
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <div class="row picturesAndMovies justify-content-md-center">
+                    <div class="row picturesAndlinkUploaded justify-content-md-center">
                         {% for picture in pictures %}
                             <div class="block_of_the_pictures col-md-3 col-xs-12">
                                 <div class="img_id_{{ picture.id }}">
@@ -35,7 +35,7 @@
                             </div>
                         {%  endfor %}
                         {% for movie in movies %}
-                            <div class="block_of_the_movies col-md-3 col-xs-12">
+                            <div class="block_of_the_linkUploaded col-md-3 col-xs-12">
                                 <div class="link_id_{{ movie.id }} text-center">
                                     <iframe name="{{ movie.id }}"
                                             src="{{ movie.link }}"
@@ -58,7 +58,7 @@
                     </div>
                 </div>
             </div>
-            <div class="new_input_files col-md-12"></div>
+            <div class="new_input_uploadFile col-md-12"></div>
             <div class="block_input_img text-center">
                 <button id="btn_input_img" class="btn btn-primary">Valider les images modifiés</button>
                 <button id="btn_input_link" class="btn btn-primary">Valider les liens modifiés</button>
@@ -67,47 +67,47 @@
             <!--adding new photos and new links -->
             {{ form_start(form) }}
             <div class="pictureBlock col-xs-12">
-                {{ form_label (form.files, '', {'label': 'Image (taille max: 2mo, type: jpg, jpeg, png)'} ) }}
-                <ul id="files-fields-list" class="col-xs-12"
-                    data-prototype-files=" {{ form_widget( form.files.vars.prototype )| e }} "
-                    data-widget-files-tags=" {{ '<li></li>' | e }} "
-                    data-widget-files-counter= "0">
-                    {% for filesField in form.files %}
-                        <li class="files_class">
-                            {{ form_errors ( filesField ) }}
-                            {{ form_widget ( filesField ) }}
+                {{ form_label (form.uploadFile, '', {'label': 'Image (taille max: 2mo, type: jpg, jpeg, png)'} ) }}
+                <ul id="uploadFile-fields-list" class="col-xs-12"
+                    data-prototype-uploadFile=" {{ form_widget( form.uploadFile.vars.prototype )| e }} "
+                    data-widget-uploadFile-tags=" {{ '<li></li>' | e }} "
+                    data-widget-uploadFile-counter= "0">
+                    {% for uploadFileField in form.uploadFile %}
+                        <li class="uploadFile_class">
+                            {{ form_errors ( uploadFileField ) }}
+                            {{ form_widget ( uploadFileField ) }}
                         </li>
                     {% endfor %}
                 </ul>
                 <div class="text-center">
                     <button type="button"
-                            class="add-another-collection-widget-files btn btn-warning"
-                            data-list-selector="#files-fields-list">Ajouter une autre photo</button>
+                            class="add-another-collection-widget-uploadFile btn btn-warning"
+                            data-list-selector="#uploadFile-fields-list">Ajouter une autre photo</button>
                     <button type="button"
-                            class="remove-another-collection-widget-files btn btn-danger"
-                            data-list-selector="#files-fields-list">Supprimer la dernière photo</button>
+                            class="remove-another-collection-widget-uploadFile btn btn-danger"
+                            data-list-selector="#uploadFile-fields-list">Supprimer la dernière photo</button>
                 </div>
             </div>
 
-            {{ form_label (form.movies, '', {'label': 'Lien vidéo'} ) }}
-            <ul id="movies-fields-list"
-                data-prototype=" {{ form_widget( form.movies.vars.prototype )| e }} "
+            {{ form_label (form.linkUploaded, '', {'label': 'Lien vidéo'} ) }}
+            <ul id="linkUploaded-fields-list"
+                data-prototype=" {{ form_widget( form.linkUploaded.vars.prototype )| e }} "
                 data-widget-tags=" {{ '<li></li>' | e }} "
                 data-widget-counter="0" >
-                {% for moviesField in form.movies %}
-                    <li class="movies_class">
-                        {{ form_errors( moviesField ) }}
-                        {{ form_widget( moviesField ) }}
+                {% for linkUploadedField in form.linkUploaded %}
+                    <li class="linkUploaded_class">
+                        {{ form_errors( linkUploadedField ) }}
+                        {{ form_widget( linkUploadedField ) }}
                     </li>
                 {% endfor %}
             </ul>
             <div class="text-center">
                 <button type="button"
                         class="add-another-collection-widget btn btn-warning"
-                        data-list-selector="#movies-fields-list">Ajouter un autre lien</button>
+                        data-list-selector="#linkUploaded-fields-list">Ajouter un autre lien</button>
                 <button type="button"
                         class="remove-another-collection-widget btn btn-danger"
-                        data-list-selector="#movies-fields-list">Supprimer le lien</button>
+                        data-list-selector="#linkUploaded-fields-list">Supprimer le lien</button>
             </div>
 
             <!--rest of form-->
@@ -130,7 +130,7 @@
                 <div class="btn_validate col-lg-12">
                     <div class="row">
                         <div class="col-lg-6 text-center">
-                            {{ form_row(form.validate) }}
+                            <button type="submit" class="btn btn-primary">Valider la modification</button>
                         </div>
                         <div class="col-lg-6 text-center">
                             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">

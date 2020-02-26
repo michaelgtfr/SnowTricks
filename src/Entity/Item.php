@@ -61,6 +61,10 @@ class Item
      */
     private $comments;
 
+    private $uploadFile;
+
+    private $linkUploaded;
+
     public function __construct()
     {
         $this->pictures = new ArrayCollection();
@@ -224,5 +228,37 @@ class Item
         }
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUploadFile()
+    {
+        return $this->uploadFile;
+    }
+
+    /**
+     * @param mixed $uploadFile
+     */
+    public function setUploadFile($uploadFile): void
+    {
+        $this->uploadFile = $uploadFile;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLinkUploaded()
+    {
+        return $this->linkUploaded;
+    }
+
+    /**
+     * @param mixed $linkUploaded
+     */
+    public function setLinkUploaded($linkUploaded): void
+    {
+        $this->linkUploaded = $linkUploaded;
     }
 }

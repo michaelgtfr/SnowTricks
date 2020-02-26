@@ -32,23 +32,22 @@ class ModifyArticleTreatment
         /**
          * @var UploadedFile $value
          */
-        //Creation of the new name and its transfer for pictures
+        //Creation of the new name and its transfer for pictures and Inserting photos in the Item entity
         foreach ($files as &$value) {
             $namePictures = new ProcessingFiles();
-            $value = $namePictures->processingFiles($value, $value->guessExtension(), 'imgPost');
-        }
-        //Inserting user in the Item entity
-        $item->setUser($user);
 
-        //Inserting photos in the Item entity
-        foreach ($files as &$value) {
+            $nameChangedPicture = $namePictures->processingFiles($value, $value->guessExtension(), 'imgPost');
+
             $picture = new Picture();
-            $nameElement = pathinfo($value);
+            $nameElement = pathinfo($nameChangedPicture);
             $picture->setName(strval($nameElement['filename']));
             $picture->setExtension(strval($nameElement['extension']));
             $picture->setDescription('photo_'.$nameElement['filename']);
             $item->addPicture($picture);
         }
+        //Inserting user in the Item entity
+        $item->setUser($user);
+
         //Inserting movie in the Item entity
         foreach ($movies as &$value) {
             $movieEntity = new Movie();

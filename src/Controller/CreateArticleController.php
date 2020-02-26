@@ -34,12 +34,11 @@ class CreateArticleController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             //recovery and check of different data
-            $files = $protect->fileProtect($form->get('files')->getData());
-            $movies = $protect->urlProtect($form->get('movies')->getData());
+            $files = $protect->fileProtect($form->get('uploadFile')->getData());
+            $movies = $protect->urlProtect($form->get('linkUploaded')->getData());
             $item->setTitle($protect->textProtect($form->get('title')->getData()));
             $item->setChapo($protect->textProtect($form->get('chapo')->getData()));
             $item->setContent($protect->textProtect($form->get('content')->getData()));
-
             if ($files !== false) {
                 if ($movies !== false) {
                     // data processing

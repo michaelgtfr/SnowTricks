@@ -44,8 +44,8 @@ class ModifyArticleController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             //Recovery and check of different data
-            $files = $protect->fileProtect($form->get('files')->getData());
-            $movies = $protect->urlProtect($form->get('movies')->getData());
+            $files = $protect->fileProtect($form->get('uploadFile')->getData());
+            $movies = $protect->urlProtect($form->get('linkUploaded')->getData());
             $item->setTitle($protect->textProtect($item->getTitle()));
             $item->setChapo($protect->textProtect($item->getChapo()));
             $item->setContent($protect->textProtect($item->getContent()));
