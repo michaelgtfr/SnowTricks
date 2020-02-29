@@ -16,7 +16,7 @@
                     Images
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <div class="row picturesAndlinkUploaded justify-content-md-center">
+                    <div class="row picturesAndMovies justify-content-md-center">
                         {% for picture in pictures %}
                             <div class="block_of_the_pictures col-md-3 col-xs-12">
                                 <div class="img_id_{{ picture.id }}">
@@ -35,7 +35,7 @@
                             </div>
                         {%  endfor %}
                         {% for movie in movies %}
-                            <div class="block_of_the_linkUploaded col-md-3 col-xs-12">
+                            <div class="block_of_the_movies col-md-3 col-xs-12">
                                 <div class="link_id_{{ movie.id }} text-center">
                                     <iframe name="{{ movie.id }}"
                                             src="{{ movie.link }}"
@@ -58,7 +58,7 @@
                     </div>
                 </div>
             </div>
-            <div class="new_input_uploadFile col-md-12"></div>
+            <div class="new_input_files col-md-12"></div>
             <div class="block_input_img text-center">
                 <button id="btn_input_img" class="btn btn-primary">Valider les images modifiés</button>
                 <button id="btn_input_link" class="btn btn-primary">Valider les liens modifiés</button>

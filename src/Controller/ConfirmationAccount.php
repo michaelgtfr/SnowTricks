@@ -8,7 +8,6 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Service\SecurityBreachProtection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,19 +21,19 @@ class ConfirmationAccount extends AbstractController
      * @Route("/confirmation", name="app_confirmation")
      * @param Request $request
      * @param EntityManagerInterface $em
-     * @param SecurityBreachProtection $protect
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function confirmationAccount(Request $request, EntityManagerInterface $em, SecurityBreachProtection $protect)
+    public function confirmationAccount(Request $request, EntityManagerInterface $em)
     {
-        $emailCheck = $protect->emailProtect($request->get('activation'));
-        $keyCheck = $protect->textProtect($request->get('cle'));
+        $user = new User();
+        $user->setEmail($request->get('activation'));
+        $user->setConfirmationKey($request->get('cle'));
 
         if (!empty($emailCheck) && !empty($keyCheck)) {
             $user = $em->getRepository(User::class)
                 ->findOneBy([
-                    'email' => $emailCheck,
-                    'confirmationKey' => $keyCheck
+                    'email' => $user->getEmail(),
+                    'confirmationKey' => $user->getConfirmationKey()
                     ]);
 
                 if( !empty($user)) {

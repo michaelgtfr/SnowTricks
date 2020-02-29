@@ -8,7 +8,6 @@
 namespace App\Controller;
 
 use App\Entity\Movie;
-use App\Service\SecurityBreachProtection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,26 +21,15 @@ class DeletedMovie extends AbstractController
      * @Route("/deleteMovie", name="app_deleted_movie")
      * @param Request $request
      * @param EntityManagerInterface $em
-     * @param SecurityBreachProtection $protect
      * @return Response
      */
-    public function deletedMovie(Request $request, EntityManagerInterface $em, SecurityBreachProtection $protect)
+    public function deletedMovie(Request $request, EntityManagerInterface $em)
     {
-        // Check the GET 'name'
-        $name = $protect->textProtect($request->get('name'));
-
         $movie = $em->getRepository(Movie::class)
-            ->find($name);
+            ->find($request->get('name'));
         $em->remove($movie);
         $em->flush();
 
-        // Recovery to verify the effective deletion of the user
-        $checkDeleteMovie = $em->getRepository(Movie::class)
-            ->find($name);
-
-        if ($checkDeleteMovie == null) {
-            return new Response('La vidéo à ètè supprimé', 200);
-        }
-        return new Response('Désolé mais un problème à eu lieu, veuillez réessayer ultérieurement', 500);
+        return new Response('La vidéo à ètè supprimé', 200);
     }
 }

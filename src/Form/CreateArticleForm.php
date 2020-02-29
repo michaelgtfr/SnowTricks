@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\File;
 
 class CreateArticleForm extends AbstractType
 {
@@ -34,6 +35,17 @@ class CreateArticleForm extends AbstractType
             ->add('uploadFile', CollectionType::class, [
                 'entry_type' => FileType::class,
                     'entry_options' => [
+                        'constraints' => [
+                            new File([
+                                'maxSize' => '2048k',
+                                'mimeTypes' => [
+                                    'image/jpg',
+                                    'image/jpeg',
+                                    'image/png'
+                                ],
+                                'mimeTypesMessage' => 'attention!! les images autorisés sont le png, jpg ou jpeg',
+                            ])
+                        ],
                         'attr' => [
                             'lang' => 'fr',
                         ]

@@ -8,7 +8,6 @@
 namespace App\Controller;
 
 use App\Entity\Item;
-use App\Service\SecurityBreachProtection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,14 +19,13 @@ class HomepagePagination extends AbstractController
      * Paging of asynchronous items via ajax
      * @Route("/homepagePagination", name="app_homepage_pagination")
      * @param Request $request
-     * @param SecurityBreachProtection $protect
      * @return Response
      */
-    public function homepagePagination(Request $request, SecurityBreachProtection $protect)
+    public function homepagePagination(Request $request)
     {
         if ($request->isXmlHttpRequest()) {
             // Check the POST 'numberArticleLoad'
-            $numberArticleLoad = $protect->textProtect($request->get('numberArticleLoad'));
+            $numberArticleLoad = htmlspecialchars($request->get('numberArticleLoad'));
 
             $items = $this->getDoctrine()
                 ->getRepository(Item::class)
@@ -36,9 +34,5 @@ class HomepagePagination extends AbstractController
             $req =  json_encode($items);
             return new Response($req, 200);
         }
-        return new Response(
-            "Désoler mais un problème technique a eu lieu, veuillez réessayer ultérieurement",
-            500
-        );
     }
 }

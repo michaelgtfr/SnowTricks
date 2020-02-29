@@ -9,6 +9,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -19,16 +21,19 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Assert\Type("int")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=100, unique=true)
+     * @Assert\Email
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Assert\Type("string")
      */
     private $name;
 
@@ -40,6 +45,7 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string", length=255)
+     * @Assert\Type("string")
      */
     private $password;
 
@@ -60,21 +66,25 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Type("string")
      */
     private $presentation;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Item", mappedBy="user")
+     * @Assert\Type("object")
      */
     private $items;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="author")
+     * @Assert\Type("object")
      */
     private $comments;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Type("string")
      */
     private $confirmationKey;
 
@@ -110,7 +120,7 @@ class User implements UserInterface
 
     public function setName(string $name): self
     {
-        $this->name = $name;
+        $this->name = filter_var($name, FILTER_SANITIZE_STRING);
 
         return $this;
     }
@@ -186,7 +196,7 @@ class User implements UserInterface
 
     public function setPresentation(string $presentation): self
     {
-        $this->presentation = $presentation;
+        $this->presentation = filter_var($presentation, FILTER_SANITIZE_STRING);
 
         return $this;
     }

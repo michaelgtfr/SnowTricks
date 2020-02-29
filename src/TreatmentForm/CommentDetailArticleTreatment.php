@@ -8,7 +8,6 @@
 namespace App\TreatmentForm;
 
 use App\Entity\Item;
-use App\Service\SecurityBreachProtection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,21 +32,15 @@ class CommentDetailArticleTreatment
          * @var Item $security
          * @var $form FormInterface
          */
-        //Check the data comment
-        $check = (new SecurityBreachProtection())
-            ->textProtect($form->getData()->getComment());
 
-        if (!empty($check)) {
-            $data = $form->getData();
+        $data = $form->getData();
 
-            $data->setDateCreate(new \DateTime());
-            $security->getUser()->addComment($data);
-            $item->addComment($data);
-            $em->persist($data);
-            $em->flush();
+        $data->setDateCreate(new \DateTime());
+        $data->setAuthor($security->getUser());
+        $data->setArticle($item);
+        $em->persist($data);
+        $em->flush();
 
-            return true;
-        }
-        return false;
+        return true;
     }
 }

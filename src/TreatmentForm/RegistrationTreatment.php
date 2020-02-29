@@ -55,7 +55,7 @@ class RegistrationTreatment
         $em->persist($user);
         $em->flush();
 
-        $emailConfirmation = ( new MailerService())->mailer($mailer, $user->getEmail(), $key, $host);
+        $emailConfirmation = (new MailerService())->mailer($mailer, $user->getEmail(), $key, $host);
 
         if ($emailConfirmation === true) {
             return true;

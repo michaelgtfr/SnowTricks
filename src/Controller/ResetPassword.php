@@ -9,7 +9,6 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\ResetPasswordForm;
-use App\Service\SecurityBreachProtection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,34 +24,28 @@ class ResetPassword extends AbstractController
      * @param Request $request
      * @param EntityManagerInterface $em
      * @param UserPasswordEncoderInterface $passwordEncoder
-     * @param SecurityBreachProtection $protect
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function resetPassword(Request $request, EntityManagerInterface $em,
-                                  UserPasswordEncoderInterface $passwordEncoder, SecurityBreachProtection $protect)
+                                  UserPasswordEncoderInterface $passwordEncoder)
     {
         //Check GET 'user' and 'cle'
-        $emailChecked = $protect->emailProtect($request->get('user'));
-        $keyChecked = $protect->textProtect($request->get('cle'));
+        $emailChecked = filter_var($request->get('user'), FILTER_VALIDATE_EMAIL);
+        $keyChecked = htmlspecialchars($request->get('cle'));
 
         //User account recovery
         $user = $em->getRepository(User::class)
             ->findOneBy(['email' => $emailChecked]);
 
         if (!empty($user) && $user->getConfirmationKey() == $keyChecked) {
-
             //form creation
             $form = $this->createForm(ResetPasswordForm::class, $user);
 
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
-                //Check data
-                $passwordOne = $protect->textProtect($form->get('password')->getData());
-                $passwordTwo = $protect->textProtect($form->get('passwordCheck')->getData());
-                $emailForm =  $protect->emailProtect($form->get('email')->getData());
 
-                if ($passwordOne === $passwordTwo && $emailForm == $user->getEmail()) {
-                    $user->setPassword($passwordEncoder->encodePassword($user, $passwordOne));
+                if ($user->getPassword() === $user->getPasswordCheck()) {
+                    $user->setPassword($passwordEncoder->encodePassword($user, $user->getPassword()));
                     $em->flush();
 
                     $this ->addFlash( 'success' , 'Vos mot de passe à été modifié');

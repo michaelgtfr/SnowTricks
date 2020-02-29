@@ -8,7 +8,6 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegisterForm;
 use App\Service\CaptchaProtection;
-use App\Service\SecurityBreachProtection;
 use App\TreatmentForm\RegistrationTreatment;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,13 +24,12 @@ class RegistrationController extends AbstractController
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param MailerInterface $mailer
-     * @param SecurityBreachProtection $protect
      * @param EntityManagerInterface $em
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response|void
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, MailerInterface $mailer,
-                             SecurityBreachProtection $protect, EntityManagerInterface $em)
+                             EntityManagerInterface $em)
     {
         //form creation
         $user = new User();
@@ -49,21 +47,11 @@ class RegistrationController extends AbstractController
             ->serviceCaptcha();
 
             if ($captcha === true) {
-                //Check the password
-                $passwordOne = $protect->textProtect($user->getPassword());
-                $passwordTwo = $protect->textProtect($user->getPasswordCheck());
-
-                if(!empty($passwordOne) == !empty($passwordTwo)) {
-                    //Check the data
-                    $extensionFiles = $protect->textProtect($form->get('picture')->getData()->guessExtension());
-                    $user->setEmail($protect->emailProtect($user->getEmail()));
-                    $user->setName($protect->textProtect($user->getName()));
-                    $user->setPresentation($protect->textProtect($user->getPresentation()));
-
+                if(!empty($user->getPassword()) == !empty($user->getPasswordCheck())) {
                     //Data processing
                     $treatment = (new RegistrationTreatment())->treatment(
                         $user,
-                        $extensionFiles,
+                        $form->get('picture')->getData()->guessExtension(),
                         $passwordEncoder,
                         $mailer,
                         $em,

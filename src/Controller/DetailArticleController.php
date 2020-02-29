@@ -8,7 +8,6 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Entity\Item;
 use App\Form\CommentForm;
-use App\Service\SecurityBreachProtection;
 use App\TreatmentForm\CommentDetailArticleTreatment;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,18 +23,17 @@ class DetailArticleController extends AbstractController
      * @param Request $request
      * @param EntityManagerInterface $em
      * @param Security $security
-     * @param SecurityBreachProtection $protect
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function detailArticle(Request $request, EntityManagerInterface $em,
-                                  Security $security, SecurityBreachProtection $protect)
+    public function detailArticle(Request $request, EntityManagerInterface $em, Security $security)
     {
-        //Check the GET 'id'
-        $id = $protect->textProtect($request->get('id'));
-
         $item = $em->getRepository(Item::class)
-                    ->find($id);
+                    ->find($request->get('id'));
+
+        if ($item === null) {
+            return $this->redirectToRoute('app_homepage');
+        }
 
         //form of comment in the detail of article
         $objectComment = new Comment();
@@ -43,14 +41,13 @@ class DetailArticleController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             // data processing
             $treatment = (new CommentDetailArticleTreatment())
                 ->treatment($item, $form, $security, $em);
 
             if ($treatment == true) {
                 $this ->addFlash( 'success' , 'votre commentaire à été enregistré !');
-                return $this->redirectToRoute('app_detail', ['id' => $id]);
+                return $this->redirectToRoute('app_detail', ['id' => $request->get('id')]);
             } else {
                 $this ->addFlash(
                     'error' ,

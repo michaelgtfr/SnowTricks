@@ -23,7 +23,9 @@ jQuery(document).ready( function() {
                     messageSuccess.removeChild(messageSuccess.firstChild);
                 }, 5000)
             },
-            error(response, status) {
+            error() {
+                let response = "désoler une erreur à eu lieu";
+                let status = 500;
                 //displays an error message
                 let messageError = document.querySelector(".new_input_files");
                 let para = document.createElement("p");

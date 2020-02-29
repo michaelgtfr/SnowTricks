@@ -20,20 +20,18 @@ class ModifyArticleTreatment
     /**
      * Processing of the article modification section form
      * @param User $user
-     * @param $files
-     * @param $movies
      * @param Item $item
      * @param EntityManagerInterface $em
      * @return bool
      * @throws \Exception
      */
-    public function treatment(User $user, $files, $movies, Item $item, EntityManagerInterface $em)
+    public function treatment(User $user, Item $item, EntityManagerInterface $em)
     {
         /**
          * @var UploadedFile $value
          */
         //Creation of the new name and its transfer for pictures and Inserting photos in the Item entity
-        foreach ($files as &$value) {
+        foreach ($item->getUploadFile() as &$value) {
             $namePictures = new ProcessingFiles();
 
             $nameChangedPicture = $namePictures->processingFiles($value, $value->guessExtension(), 'imgPost');
@@ -49,12 +47,15 @@ class ModifyArticleTreatment
         $item->setUser($user);
 
         //Inserting movie in the Item entity
-        foreach ($movies as &$value) {
-            $movieEntity = new Movie();
-            $value = str_replace('watch?v=', 'embed/', $value);
-            $movieEntity->setLink($value);
-            $item->addMovie($movieEntity);
+        if ($item->getLinkUploaded() != null) {
+            foreach ($item->getLinkUploaded() as &$value) {
+                $movieEntity = new Movie();
+                $value = str_replace('watch?v=', 'embed/', $value);
+                $movieEntity->setLink($value);
+                $item->addMovie($movieEntity);
+            }
         }
+
         $item->setDateCreate( new \DateTime());
         $em->flush();
 

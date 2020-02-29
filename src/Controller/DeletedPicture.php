@@ -9,7 +9,6 @@ namespace App\Controller;
 
 use App\Entity\Picture;
 use App\Service\ProcessingFiles;
-use App\Service\SecurityBreachProtection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,17 +22,13 @@ class DeletedPicture extends AbstractController
      * @Route("/deletedPicture", name="app_deleted_picture")
      * @param Request $request
      * @param EntityManagerInterface $em
-     * @param SecurityBreachProtection $protect
      * @return Response
      */
-    public function deletedPicture(Request $request, EntityManagerInterface $em, SecurityBreachProtection $protect)
+    public function deletedPicture(Request $request, EntityManagerInterface $em)
     {
-        // Check GET 'name'
-        $name = $protect->textProtect($request->get('name'));
-
         // recover the object and delete it
         $picture = $em->getRepository(Picture::class)
-            ->find($name);
+            ->find($request->get('name'));
 
         (new ProcessingFiles())->deletePicture(
             'imgPost',
@@ -43,13 +38,6 @@ class DeletedPicture extends AbstractController
             $em
         );
 
-        // Recovery to verify the effective deletion of the user
-        $checkDeletePicture = $em->getRepository(Picture::class)
-            ->find($name);
-
-        if ($checkDeletePicture == null) {
-            return new Response('La photo à été supprimer', 200);
-        }
-        return new Response('Désolé mais un problème à eu lieu veuillez réessayer ultérieurement!!', 500);
+        return new Response('La photo à été supprimer', 200);
     }
 }

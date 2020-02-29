@@ -53,8 +53,10 @@ jQuery(document).ready( function () {
                     messageSuccess.removeChild(messageSuccess.firstChild)
                 }, 5000)
             },
-            error(response, status) {
+            error() {
                 //displays an error message
+                let response = "désoler une erreur à eu lieu";
+                let status = 500;
                 let messageError = document.querySelector(".new_input_files");
                 let para = document.createElement("p");
                 para.textContent = response + " : " + status;

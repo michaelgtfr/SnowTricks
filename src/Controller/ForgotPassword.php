@@ -10,7 +10,6 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\ForgotPasswordForm;
 use App\Service\ForgotPasswordMailer;
-use App\Service\SecurityBreachProtection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,12 +24,11 @@ class ForgotPassword extends AbstractController
      * @param Request $request
      * @param EntityManagerInterface $em
      * @param MailerInterface $mailer
-     * @param SecurityBreachProtection $protect
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
      */
     public function forgotPassword(Request $request, EntityManagerInterface $em,
-                                   MailerInterface $mailer, SecurityBreachProtection $protect)
+                                   MailerInterface $mailer)
     {
         $user = new User();
 
@@ -40,11 +38,8 @@ class ForgotPassword extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            //Check the POST 'email'
-            $email = $protect->emailProtect($data->getEmail());
-
             $user = $em->getRepository(User::class)
-                ->findOneBy(['email' => $email]);
+                ->findOneBy(['email' => $data->getEmail()]);
 
             //send an email
             if (!empty($user)) {
@@ -55,7 +50,7 @@ class ForgotPassword extends AbstractController
                 );
 
                 if ($sendEmail == true) {
-                    $this ->addFlash( 'success' , 'Message envoyé, vous pouvez confirmer le changement 
+                    $this->addFlash( 'success' , 'Message envoyé, vous pouvez confirmer le changement 
                 de mot de passe en cliquant sur l\'email envoyé');
                     return $this->redirectToRoute("app_homepage");
                 }
