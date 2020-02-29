@@ -55,11 +55,10 @@ jQuery(document).ready( function () {
             },
             error() {
                 //displays an error message
-                let response = "désoler une erreur à eu lieu";
-                let status = 500;
+                let response = "désoler une erreur à eu lieu: 500";
                 let messageError = document.querySelector(".new_input_files");
                 let para = document.createElement("p");
-                para.textContent = response + " : " + status;
+                para.textContent = response;
                 para.setAttribute("class", "alert alert-danger");
                 messageError.appendChild(para);
                 jQuery("#btn_input_link").hide();

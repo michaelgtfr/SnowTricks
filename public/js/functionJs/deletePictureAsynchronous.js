@@ -19,11 +19,12 @@ jQuery(document).ready( function() {
                     messageSuccess.removeChild(messageSuccess.firstChild)
                 }, 5000)
             },
-            error(response, status) {
+            error() {
                 //displays an error message
+                let response = 'désoler mais une erreur est survenue : 500';
                 let messageError = document.querySelector(".new_input_files");
                 let para = document.createElement("p");
-                para.textContent = response + " : " + status;
+                para.textContent = response;
                 para.setAttribute("class", "alert alert-danger");
                 messageError.appendChild(para);
                 jQuery("#btn_input_img").hide();
