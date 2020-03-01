@@ -9,12 +9,11 @@ namespace App\Controller;
 
 use App\Entity\Movie;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ModifiedLinkProcessing extends AbstractController
+class ModifiedLinkProcessing
 {
     /**
      * Modifying an article link asynchronously via ajax

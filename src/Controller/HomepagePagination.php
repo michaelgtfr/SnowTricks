@@ -8,26 +8,27 @@
 namespace App\Controller;
 
 use App\Entity\Item;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class HomepagePagination extends AbstractController
+class HomepagePagination
 {
     /**
      * Paging of asynchronous items via ajax
      * @Route("/homepagePagination", name="app_homepage_pagination")
      * @param Request $request
+     * @param EntityManagerInterface $em
      * @return Response
      */
-    public function homepagePagination(Request $request)
+    public function homepagePagination(Request $request, EntityManagerInterface $em)
     {
         if ($request->isXmlHttpRequest()) {
             // Check the POST 'numberArticleLoad'
             $numberArticleLoad = htmlspecialchars($request->get('numberArticleLoad'));
 
-            $items = $this->getDoctrine()
+            $items = $em
                 ->getRepository(Item::class)
                 ->listOfArticle($numberArticleLoad, $numberArticleLoad + 5);
 

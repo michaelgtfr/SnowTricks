@@ -10,12 +10,17 @@ use App\Entity\Item;
 use App\Form\CommentForm;
 use App\TreatmentForm\CommentDetailArticleTreatment;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Security;
+use Twig\Environment;
 
-class DetailArticleController extends AbstractController
+class DetailArticleController
 {
     /**
      * Display of the details of an article and a form for comments
@@ -23,21 +28,30 @@ class DetailArticleController extends AbstractController
      * @param Request $request
      * @param EntityManagerInterface $em
      * @param Security $security
+     * @param UrlGeneratorInterface $generator
+     * @param Session $session
+     * @param FormFactoryInterface $formFactory
+     * @param Environment $twig
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Exception
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
-    public function detailArticle(Request $request, EntityManagerInterface $em, Security $security)
+    public function detailArticle(Request $request, EntityManagerInterface $em, Security $security,
+                                  UrlGeneratorInterface $generator, Session $session, FormFactoryInterface $formFactory,
+                                  Environment $twig)
     {
         $item = $em->getRepository(Item::class)
                     ->find($request->get('id'));
 
         if ($item === null) {
-            return $this->redirectToRoute('app_homepage');
+            $router = $generator->generate('app_homepage');
+            return new RedirectResponse($router, 302);
         }
 
         //form of comment in the detail of article
         $objectComment = new Comment();
-        $form = $this->createForm(CommentForm::class, $objectComment );
+        $form = $formFactory->create(CommentForm::class, $objectComment );
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -46,10 +60,11 @@ class DetailArticleController extends AbstractController
                 ->treatment($item, $form, $security, $em);
 
             if ($treatment == true) {
-                $this ->addFlash( 'success' , 'votre commentaire à été enregistré !');
-                return $this->redirectToRoute('app_detail', ['id' => $request->get('id')]);
+                $session->getFlashBag()->add( 'success' , 'votre commentaire à été enregistré !');
+                $router = $generator->generate('app_detail', ['id' => $request->get('id')] );
+                return new RedirectResponse($router, 302);
             } else {
-                $this ->addFlash(
+                $session->getFlashBag()->add(
                     'error' ,
                     'Désolé, votre commentaire n\' pas été pris en compte veuillez réessayer ultérieurement.'
                 );
@@ -68,7 +83,7 @@ class DetailArticleController extends AbstractController
         $numberItems = $em->getRepository(Comment::class)
                     ->countCommentArticle($request->get('id'));
 
-        return $this->render('article/detailArticle.html.twig', [
+        $render = $twig->render('article/detailArticle.html.twig', [
             'item' => $item,
             'pictures' => $pictures,
             'movies' => $movies,
@@ -76,5 +91,6 @@ class DetailArticleController extends AbstractController
             'numberItems' => $numberItems,
             'form' => $form->createView(),
         ]);
+        return new Response($render);
     }
 }

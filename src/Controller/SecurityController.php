@@ -5,34 +5,34 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Twig\Environment;
 
-class SecurityController extends AbstractController
+class SecurityController
 {
     /**
      * Allows connection to the site, create via Security
      * @Route("/login", name="app_login")
      * @param AuthenticationUtils $authenticationUtils
+     * @param Environment $twig
      * @return Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $authenticationUtils, Environment $twig): Response
     {
-        // if ($this->getUser()) {
-        //    $this->redirectToRoute('target_path');
-        // }
-        // get the login error if there is one
-
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig', [
+        $render = $twig->render('security/login.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
         ]);
+        return new Response($render);
     }
 
     /**
