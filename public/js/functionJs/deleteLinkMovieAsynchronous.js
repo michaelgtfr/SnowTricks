@@ -20,7 +20,7 @@ jQuery(document).ready( function() {
             },
             error() {
                 //displays an error message
-                let response = 'Désoler mais une erreur est survenue : 500';
+                let response = "Désoler mais une erreur est survenue : 500";
                 let messageError = document.querySelector(".new_input_files");
                 let para = document.createElement("p");
                 para.textContent = response;
