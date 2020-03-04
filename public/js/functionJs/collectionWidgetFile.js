@@ -1,27 +1,27 @@
 //add form collection widgets for video links, operation written in the collectionWidgetVideoLink.js file
 
 jQuery(document).ready( function() {
-    jQuery (".add-another-collection-widget-files").click( function() {
-        let filesList = jQuery( jQuery(this).attr("data-list-selector"));
+    jQuery (".add-another-collection-widget-uploadFile").click( function() {
+        let uploadFileList = jQuery( jQuery(this).attr("data-list-selector"));
 
-        let filesCounter = filesList.data("widget-files-counter") || filesList.children().length ;
+        let uploadFileCounter = uploadFileList.data("widget-uploadFile-counter") || uploadFileList.children().length ;
 
-        let newFilesWidget = filesList.attr("data-prototype-files");
+        let newUploadFileWidget = uploadFileList.attr("data-prototype-uploadFile");
 
-        newFilesWidget = newFilesWidget.replace( /__name__/g, filesCounter );
+        newUploadFileWidget = newUploadFileWidget.replace( /__name__/g, uploadFileCounter );
 
-        filesCounter ++ ;
+        uploadFileCounter ++ ;
 
-        filesList.data( "widget-files-counter", filesCounter );
+        uploadFileList.data( "widget-uploadFile-counter", uploadFileCounter );
 
-        let newFilesElem = jQuery(filesList.attr("data-widget-files-tags" )).html(newFilesWidget );
-        newFilesElem.appendTo(filesList );
+        let newUploadFileElem = jQuery(uploadFileList.attr("data-widget-uploadFile-tags" )).html(newUploadFileWidget );
+        newUploadFileElem.appendTo(uploadFileList );
         $("input[type=file]").change(function (e){
             $(this).next(".custom-file-label").text(e.target.files[0].name);
         });
         $(".custom-file-label" ).attr( "data-browse", "Choisir" );
     });
-    jQuery (".remove-another-collection-widget-files").click( function() {
+    jQuery (".remove-another-collection-widget-uploadFile").click( function() {
         $(".custom-file").last().parent().remove();
     });
 });

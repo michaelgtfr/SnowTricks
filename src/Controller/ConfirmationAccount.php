@@ -8,65 +8,72 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Service\SecurityBreachProtection;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ConfirmationAccount extends AbstractController
+class ConfirmationAccount
 {
     /**
      * Confirmation for registering a user account. This page is reached by a link send by email to the user.
-     *
      * @Route("/confirmation", name="app_confirmation")
      * @param Request $request
      * @param EntityManagerInterface $em
-     * @param SecurityBreachProtection $protect
+     * @param Session $session
+     * @param UrlGeneratorInterface $generator
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function confirmationAccount(Request $request, EntityManagerInterface $em, SecurityBreachProtection $protect)
+    public function confirmationAccount(Request $request, EntityManagerInterface $em,
+                                        Session $session, UrlGeneratorInterface $generator)
     {
-        $emailCheck = $protect->emailProtect($request->get('activation'));
-        $keyCheck = $protect->textProtect($request->get('cle'));
+        $user = new User();
+        $user->setEmail($request->get('activation'));
+        $user->setConfirmationKey($request->get('cle'));
 
-        if (!empty($emailCheck) && !empty($keyCheck)) {
+        if (!empty($user->getEmail()) && !empty($user->getConfirmationKey())) {
             $user = $em->getRepository(User::class)
                 ->findOneBy([
-                    'email' => $emailCheck,
-                    'confirmationKey' => $keyCheck
+                    'email' => $user->getEmail(),
+                    'confirmationKey' => $user->getConfirmationKey()
                     ]);
 
-                if( !empty($user)) {
+                if(!empty($user)) {
                 if($user->getConfirmation() == 1) {
-                    $this->addFlash(
+                    $session->getFlashBag()->add(
                         'success',
                         'Votre compte est déjà activer vous pouvez vous connectez ici'
                     );
-                    return $this->redirectToRoute('app_login');
+                    $router = $generator->generate('app_login');
+                    return new RedirectResponse($router, 302);
                 }
                 $user->setConfirmation(1);
                 $em->persist($user);
                 $em->flush();
 
-                $this->addFlash(
+                $session->getFlashBag()->add(
                     'success',
                     'Votre compte à été activé vous pouvez dès à présent vous connectez à votre compte '
                 );
-                return $this->redirectToRoute('app_login');
+                $router = $generator->generate('app_login');
+                return new RedirectResponse($router, 302);
             }
-            $this->addFlash(
+            $session->getFlashBag()->add(
                 'error',
                 'Désoler mais votre compte n\'existe pas, 
             veuillez vous inscrire ici si vous voulez collaborer sur ce site.'
             );
-            return $this->redirectToRoute('app_register');
+            $router = $generator->generate('app_register');
+            return new RedirectResponse($router, 302);
         }
-        $this->addFlash(
+        $session->getFlashBag()->add(
             'error',
             'Désoler mais votre compte n\'existe pas, 
         veuillez vous inscrire ici si vous voulez collaborer sur ce site.'
         );
-        return $this->redirectToRoute('app_register');
+        $router = $generator->generate('app_register');
+        return new RedirectResponse($router, 302);
     }
 }

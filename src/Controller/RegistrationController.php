@@ -8,16 +8,20 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegisterForm;
 use App\Service\CaptchaProtection;
-use App\Service\SecurityBreachProtection;
 use App\TreatmentForm\RegistrationTreatment;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Twig\Environment;
 
-class RegistrationController extends AbstractController
+class RegistrationController
 {
     /**
      * Display file of the registration form, its processing and registration in Bdd
@@ -25,18 +29,25 @@ class RegistrationController extends AbstractController
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param MailerInterface $mailer
-     * @param SecurityBreachProtection $protect
      * @param EntityManagerInterface $em
+     * @param Environment $twig
+     * @param FormFactoryInterface $formFactory
+     * @param Session $session
+     * @param UrlGeneratorInterface $generator
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response|void
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, MailerInterface $mailer,
-                             SecurityBreachProtection $protect, EntityManagerInterface $em)
+                             EntityManagerInterface $em, Environment $twig, FormFactoryInterface $formFactory,
+                             Session $session, UrlGeneratorInterface $generator)
     {
         //form creation
         $user = new User();
 
-        $form = $this->createForm(RegisterForm::class, $user);
+        $form = $formFactory->create(RegisterForm::class, $user);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -49,23 +60,11 @@ class RegistrationController extends AbstractController
             ->serviceCaptcha();
 
             if ($captcha === true) {
-                //Check the password
-                $passwordOne = $protect->textProtect($form->get('password')->getData());
-                $passwordTwo = $protect->textProtect($form->get('passwordCheck')->getData());
-
-                if(!empty($passwordOne) == !empty($passwordTwo)) {
-                    //Check the data
-                    $extensionFiles = $protect->textProtect($form->get('picture')->getData()->guessExtension());
-                    $data = $form->getData();
-                    $user->setEmail($protect->emailProtect($user->getEmail()));
-                    $user->setName($protect->textProtect($user->getName()));
-                    $user->setPresentation($protect->textProtect($user->getPresentation()));
-
+                if(!empty($user->getPassword()) == !empty($user->getPasswordCheck())) {
                     //Data processing
                     $treatment = (new RegistrationTreatment())->treatment(
                         $user,
-                        $data,
-                        $extensionFiles,
+                        $form->get('picture')->getData()->guessExtension(),
                         $passwordEncoder,
                         $mailer,
                         $em,
@@ -73,25 +72,27 @@ class RegistrationController extends AbstractController
                     );
 
                     if ($treatment === true) {
-                        $this->addFlash(
+                        $session->getFlashBag()->add(
                             'success',
                             'Félicitation votre compte a été créé vous devez confirmer votre inscription en 
                             cliquant sur le lien envoyé sur votre boite mail pour pouvoir vous connectez. 
                             Si vous n\'avez pas reçu votre email, allez sur la page de connexion, 
                             cliquez sur le lien du mot de passe oublié et Suivez les instructions.'
                         );
-                        return $this->redirectToRoute('app_homepage');
+                        $router = $generator->generate('app_homepage');
+                        return new RedirectResponse($router, 302);
                     }
                 }
             }
-            $this->addFlash(
+            $session->getFlashBag()->add(
                 'error',
                 'Désoler, mais la création du compte n\'a pas abouti, ceci peut être du à un compte existant
                     ou à un problème de mot de passe, veuillez réessayer ultérieurement!!'
             );
         }
-        return $this->render('security/register.html.twig', [
+        $render = $twig->render('security/register.html.twig', [
             'form' => $form->createView(),
         ]);
+        return new Response($render);
     }
 }

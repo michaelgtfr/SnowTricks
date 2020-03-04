@@ -8,39 +8,31 @@
 namespace App\Controller;
 
 use App\Entity\Movie;
-use App\Service\SecurityBreachProtection;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ModifiedLinkProcessing extends AbstractController
+class ModifiedLinkProcessing
 {
     /**
      * Modifying an article link asynchronously via ajax
      * @Route("/modifiedLinkProcessing", name="app_modified_link_processing")
      * @param Request $request
      * @param EntityManagerInterface $em
-     * @param SecurityBreachProtection $protect
      * @return Response
      */
-    public function modifiedLinkProcessing(Request $request, EntityManagerInterface $em,
-                                           SecurityBreachProtection $protect)
+    public function modifiedLinkProcessing(Request $request, EntityManagerInterface $em)
     {
         if ($request->isXmlHttpRequest()) {
-            //Recovery of modified links and their verification
-            $name = $protect->textProtect($request->get('name'));
-            $src = $protect->textProtect($request->get('src'));
-
+            //Recovery of modified links
             $movie = $em->getRepository(Movie::class)
-                ->find($name);
+                ->find(htmlspecialchars($request->get('name')));
 
-            $movie->setLink($src);
+            $movie->setLink($request->get('src'));
             $em->flush();
 
             return new Response('Le lien à été modifié', 200);
         }
-        return new Response("Désoler, un problème à eu lieu, veuillez réessayer ultérieurement", 500);
     }
 }

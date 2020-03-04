@@ -15,7 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class ProcessingFiles
 {
     /**
-     * Move the image to the img Avatar folder and change its name, protection against the fault UPLOAD, part 2/2
+     * Move the image to the img Avatar folder and change its name, protection against the fault UPLOAD
      * @param $linkFile
      * @param $extensionFile
      * @param $folder

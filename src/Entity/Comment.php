@@ -6,6 +6,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
@@ -16,26 +17,32 @@ class Comment
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Assert\Type("int")
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Item", inversedBy="comments")
+     * @Assert\Type("array")
      */
     private $article;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime
      */
     private $dateCreate;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Type("string")
      */
     private $comment;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="comments")
+     * @Assert\Type("array")
      */
     private $author;
 
@@ -75,7 +82,8 @@ class Comment
 
     public function setComment(string $comment): self
     {
-        $this->comment = $comment;
+        //Protection against the faults XSS
+        $this->comment = filter_var($comment, FILTER_SANITIZE_STRING);
 
         return $this;
     }

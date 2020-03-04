@@ -8,12 +8,12 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CommentPagination extends AbstractController
+class CommentPagination
 {
     /**
      * Feature: Allows the following comments to be retrieved from the article viewed by the user in the database,
@@ -21,12 +21,13 @@ class CommentPagination extends AbstractController
      *
      * @Route("/commentPagination", name="app_comment_pagination")
      * @param Request $request
+     * @param EntityManagerInterface $em
      * @return Response
      */
-    public function homepagePagination(Request $request)
+    public function homepagePagination(Request $request, EntityManagerInterface $em)
     {
         if ($request->isXmlHttpRequest()) {
-            $comment = $this->getDoctrine()
+            $comment = $em
                 ->getRepository(Comment::class)
                 ->commentArticle(
                     htmlspecialchars($request->get('id')),

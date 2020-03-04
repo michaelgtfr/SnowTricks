@@ -24,18 +24,12 @@ class ResetPasswordForm extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, [
-                'mapped' => false
             ])
-            ->add('passwordOne', PasswordType::class, [
+            ->add('password', PasswordType::class, [
                 'label' => 'Mot de passe',
-                'mapped' => false
             ])
-            ->add('passwordTwo', PasswordType::class, [
+            ->add('passwordCheck', PasswordType::class, [
                 'label' => 'Réécrivez votre mot de passe',
-                'mapped' => false
-            ])
-            ->add( 'validate' , SubmitType::class, [
-                'label' => 'Valider'
             ])
         ;
     }

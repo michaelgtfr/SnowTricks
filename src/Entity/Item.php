@@ -5,6 +5,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,48 +19,69 @@ class Item
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Assert\Type("int")
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="items")
+     * @Assert\Type("object")
      */
     private $user;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\Type("string")
+     *
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *  @Assert\Type("string")
      */
     private $chapo;
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\Type("string")
      */
     private $content;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime
+     *
      */
     private $dateCreate;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Picture", mappedBy="article", cascade={"persist"})
+     * @Assert\Type("object")
      */
     private $pictures;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Movie", mappedBy="article", cascade={"persist"})
+     * @Assert\Type("object")
      */
     private $movies;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="article", cascade={"persist"})
+     * @Assert\Type("object")
      */
     private $comments;
+
+    /**
+     * @Assert\Type("array")
+     */
+    private $uploadFile;
+
+    /**
+     * @Assert\Type("array")
+     */
+    private $linkUploaded;
 
     public function __construct()
     {
@@ -92,7 +114,8 @@ class Item
 
     public function setTitle(string $title): self
     {
-        $this->title = $title;
+        //Protection against the faults XSS
+        $this->title = filter_var($title, FILTER_SANITIZE_STRING);
 
         return $this;
     }
@@ -104,7 +127,7 @@ class Item
 
     public function setChapo(string $chapo): self
     {
-        $this->chapo = $chapo;
+        $this->chapo = filter_var($chapo, FILTER_SANITIZE_STRING);
 
         return $this;
     }
@@ -116,7 +139,7 @@ class Item
 
     public function setContent(string $content): self
     {
-        $this->content = $content;
+        $this->content = filter_var($content, FILTER_SANITIZE_STRING);
 
         return $this;
     }
@@ -224,5 +247,40 @@ class Item
         }
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUploadFile()
+    {
+        return $this->uploadFile;
+    }
+
+    /**
+     * @param mixed $uploadFile
+     */
+    public function setUploadFile($uploadFile): void
+    {
+        $this->uploadFile = $uploadFile;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLinkUploaded()
+    {
+        return $this->linkUploaded;
+    }
+
+    /**
+     * @param mixed $linkUploaded
+     */
+    public function setLinkUploaded($linkUploaded): void
+    {
+        //Protection against the faults XSS
+        foreach($linkUploaded as $value) {
+            $this->linkUploaded[]= filter_var($value, FILTER_VALIDATE_URL);
+        }
     }
 }

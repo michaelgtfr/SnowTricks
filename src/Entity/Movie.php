@@ -5,6 +5,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -16,16 +17,19 @@ class Movie
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Assert\Type("int")
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Item", inversedBy="movies")
+     * @Assert\Type("array")
      */
     private $article;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Type("string")
      */
     private $link;
 
@@ -53,7 +57,8 @@ class Movie
 
     public function setLink(string $link): self
     {
-        $this->link = $link;
+        //Protection against the faults XSS
+        $this->link = filter_var($link, FILTER_VALIDATE_URL);
 
         return $this;
     }

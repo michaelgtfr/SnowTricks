@@ -19,7 +19,6 @@ class RegistrationTreatment
     /**
      * Processing of data for the creation of a new account
      * @param User $user
-     * @param $data
      * @param $extensionFiles
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param MailerInterface $mailer
@@ -28,7 +27,7 @@ class RegistrationTreatment
      * @return bool
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
      */
-    public function treatment(User $user,$data, $extensionFiles,
+    public function treatment(User $user, $extensionFiles,
                               UserPasswordEncoderInterface $passwordEncoder, MailerInterface $mailer,
                               EntityManagerInterface $em, $host)
     {
@@ -37,26 +36,26 @@ class RegistrationTreatment
          */
         //check if the email address has not yet been created
         $accountExist = $em->getRepository(User::class)
-            ->findBy(['email' => $data->getEmail()]);
+            ->findBy(['email' => $user->getEmail()]);
 
 
         if (!empty($accountExist)) {
             return false;
         }
         $linkAvatar = new ProcessingFiles();
-        $linkAvatar = $linkAvatar->processingFiles($data->getPicture(), $extensionFiles, 'imgAvatar');
+        $linkAvatar = $linkAvatar->processingFiles($user->getPicture(), $extensionFiles, 'imgAvatar');
 
         $key = md5(microtime(true)*100000);
 
         $user->setPicture($linkAvatar);
-        $user->setPassword($passwordEncoder->encodePassword($user, $data->getPassword()));
+        $user->setPassword($passwordEncoder->encodePassword($user, $user->getPassword()));
         $user->setDateCreate( new \DateTime());
         $user->setConfirmationKey($key);
         $user->setConfirmation('0');
         $em->persist($user);
         $em->flush();
 
-        $emailConfirmation = ( new MailerService())->mailer($mailer, $data->getEmail(), $key, $host);
+        $emailConfirmation = (new MailerService())->mailer($mailer, $user->getEmail(), $key, $host);
 
         if ($emailConfirmation === true) {
             return true;

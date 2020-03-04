@@ -9,14 +9,18 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\ResetPasswordForm;
-use App\Service\SecurityBreachProtection;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Twig\Environment;
 
-class ResetPassword extends AbstractController
+class ResetPassword
 {
     /**
      * Modification of the password of a user after filling in the modification form
@@ -24,48 +28,53 @@ class ResetPassword extends AbstractController
      * @Route("/resetPassword", name="app_reset_password")
      * @param Request $request
      * @param EntityManagerInterface $em
+     * @param FormFactoryInterface $formFactory
      * @param UserPasswordEncoderInterface $passwordEncoder
-     * @param SecurityBreachProtection $protect
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @param Session $session
+     * @param UrlGeneratorInterface $generator
+     * @param Environment $twig
+     * @return RedirectResponse|Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
-    public function resetPassword(Request $request, EntityManagerInterface $em,
-                                  UserPasswordEncoderInterface $passwordEncoder, SecurityBreachProtection $protect)
+    public function resetPassword(Request $request, EntityManagerInterface $em, FormFactoryInterface $formFactory,
+                                  UserPasswordEncoderInterface $passwordEncoder, Session $session,
+                                  UrlGeneratorInterface $generator, Environment $twig)
     {
         //Check GET 'user' and 'cle'
-        $emailChecked = $protect->emailProtect($request->get('user'));
-        $keyChecked = $protect->textProtect($request->get('cle'));
+        $emailChecked = filter_var($request->get('user'), FILTER_VALIDATE_EMAIL);
+        $keyChecked = htmlspecialchars($request->get('cle'));
 
         //User account recovery
         $user = $em->getRepository(User::class)
             ->findOneBy(['email' => $emailChecked]);
 
         if (!empty($user) && $user->getConfirmationKey() == $keyChecked) {
-
             //form creation
-            $form = $this->createForm(ResetPasswordForm::class, $user);
+            $form = $formFactory->create(ResetPasswordForm::class, $user);
 
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
-                //Check data
-                $passwordOne = $protect->textProtect($form->get('passwordOne')->getData());
-                $passwordTwo = $protect->textProtect($form->get('passwordTwo')->getData());
-                $emailForm =  $protect->emailProtect($form->get('email')->getData());
 
-                if ($passwordOne === $passwordTwo && $emailForm == $user->getEmail()) {
-                    $user->setPassword($passwordEncoder->encodePassword($user, $passwordOne));
+                if ($user->getPassword() === $user->getPasswordCheck()) {
+                    $user->setPassword($passwordEncoder->encodePassword($user, $user->getPassword()));
                     $em->flush();
 
-                    $this ->addFlash( 'success' , 'Vos mot de passe à été modifié');
-                    return $this->redirectToRoute("app_homepage");
+                    $session->getFlashBag()->add( 'success' , 'Vos mot de passe à été modifié');
+                    $router = $generator->generate('app_homepage');
+                    return new RedirectResponse($router, 302);
                 }
-                $this ->addFlash( 'error' , 'Vos mot de passe ou vos emails sont différents');
+                $session->getFlashBag()->add('error' , 'Vos mot de passe ou vos emails sont différents');
             }
-            return $this ->render( 'security/forgotPassword.html.twig', [
+            $render = $twig->render( 'security/forgotPassword.html.twig', [
                 'form' => $form->createView(),
             ]);
+            return new Response($render);
         }
-        $this ->addFlash( 'error' , 'Désolé, votre compte n\'a pas été trouvé,
+        $session->getFlashBag()->add( 'error' , 'Désolé, votre compte n\'a pas été trouvé,
          vous pouvez ré-essayer le lien envoyer ou reprendre du début le processus de modification du mot de passe');
-        return $this->redirectToRoute("app_homepage");
+        $router = $generator->generate('app_homepage');
+        return new RedirectResponse($router, 302);
     }
 }

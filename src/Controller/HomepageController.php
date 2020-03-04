@@ -5,32 +5,41 @@
 namespace App\Controller;
 
 use App\Entity\Item;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Environment;
 
-class HomepageController extends AbstractController
+class HomepageController
 {
     /**
      * Homepage on the website displays blog posts
      * @Route("/", name="app_homepage")
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param Environment $twig
+     * @param EntityManagerInterface $em
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
-    public function Homepage()
+    public function Homepage(Environment $twig, EntityManagerInterface $em)
     {
         //Recovery of figures in the database
-        $items = $this->getDoctrine()
+        $items = $em
             ->getRepository(Item::class)
             ->listOfArticle(0,10);
 
         //Number items in the bdd
-        $numberItems = $this->getDoctrine()
+        $numberItems = $em
         ->getRepository(Item::class)
         ->countArticle();
 
         //send items to view
-        return $this->render('article/homepage.html.twig',[
+        $render = $twig->render('article/homepage.html.twig',[
             'items'=> $items,
             'numberItems' => $numberItems,
         ]);
+
+        return new Response($render);
     }
 }
